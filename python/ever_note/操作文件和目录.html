@@ -1,0 +1,520 @@
+<html>
+<head>
+  <title>操作文件和目录</title>
+  <basefont face="微软雅黑" size="2" />
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+  <meta name="exporter-version" content="YXBJ Windows/600718 (zh-CN, DDL); Windows/10.0.0 (Win64);"/>
+  <style>
+    body, td {
+      font-family: 微软雅黑;
+      font-size: 10pt;
+    }
+  </style>
+</head>
+<body>
+<a name="508"/>
+<h1>操作文件和目录</h1>
+
+<div><span><div style="-evernote-webclip:true"><br/><div style="font-size: 16px; display: inline-block;"><div style="font:14px/20px &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif;text-size-adjust:100%;background:rgb(255, 255, 255);color:rgb(68, 68, 68);"><div style="font-family:&quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif;font-size:14px;line-height:20px;color:rgb(102, 102, 102);background-color:rgb(255, 255, 255);"><div><div style="box-sizing:border-box;"><div style="flex-wrap:wrap;list-style:none;"><div style="flex:0 0 auto;box-sizing:border-box;"><div><div>
+                            
+    <h4 style="margin:0px 0px 15px;font-family:&quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif;font-weight:normal;color:rgb(68, 68, 68);text-transform:none;font-size:16px;line-height:22px;">操作文件和目录</h4>
+    <div><span>阅读: 156250</span> </div>
+
+    <hr style="border-left-style:initial;box-sizing:content-box;margin:15px 0px;border-width:1px 0px 0px;border-right-style:initial;border-bottom-style:initial;height:0px;border-right-color:initial;border-bottom-color:initial;border-left-color:initial;border-image:initial;border-top-style:solid;border-top-color:rgb(221, 221, 221);"/>
+
+    <div><p style="margin:0px 0px 15px;overflow-wrap:break-word;white-space:pre-wrap;">如果我们要操作文件、目录，可以在命令行下面输入操作系统提供的各种命令来完成。比如<code style="font-size:12px;font-family:Consolas, monospace, serif;color:rgb(221, 0, 85);white-space:nowrap;padding:0px 4px;border:1px solid rgb(221, 221, 221);border-radius:3px;background:rgb(250, 250, 250);">dir</code>、<code style="font-size:12px;font-family:Consolas, monospace, serif;color:rgb(221, 0, 85);white-space:nowrap;padding:0px 4px;border:1px solid rgb(221, 221, 221);border-radius:3px;background:rgb(250, 250, 250);">cp</code>等命令。</p>
+<p style="margin:0px 0px 15px;margin-top:15px;overflow-wrap:break-word;white-space:pre-wrap;">如果要在Python程序中执行这些目录和文件的操作怎么办？其实操作系统提供的命令只是简单地调用了操作系统提供的接口函数，Python内置的<code style="font-size:12px;font-family:Consolas, monospace, serif;color:rgb(221, 0, 85);white-space:nowrap;padding:0px 4px;border:1px solid rgb(221, 221, 221);border-radius:3px;background:rgb(250, 250, 250);">os</code>模块也可以直接调用操作系统提供的接口函数。</p>
+<p style="margin:0px 0px 15px;margin-top:15px;overflow-wrap:break-word;white-space:pre-wrap;">打开Python交互式命令行，我们来看看如何使用<code style="font-size:12px;font-family:Consolas, monospace, serif;color:rgb(221, 0, 85);white-space:nowrap;padding:0px 4px;border:1px solid rgb(221, 221, 221);border-radius:3px;background:rgb(250, 250, 250);">os</code>模块的基本功能：</p>
+<pre style="overflow:auto;margin:0px 0px 15px;background:rgb(250, 250, 250);font:12px/18px Consolas, monospace, serif;color:rgb(68, 68, 68);tab-size:4;padding:10px;border:1px solid rgb(221, 221, 221);border-radius:3px;margin-top:15px;word-break:break-all;overflow-wrap:break-word;white-space:pre-wrap;"><code><span style="color:rgb(153, 0, 115);">&gt;&gt;&gt; </span><span style="color:rgb(51, 51, 51);font-weight:bold;">import</span> os
+<span style="color:rgb(153, 0, 115);">&gt;&gt;&gt; </span>os.name <span style="color:rgb(153, 153, 136);font-style:italic;"># 操作系统类型</span>
+<span style="color:rgb(221, 17, 68);">'posix'</span>
+</code></pre><p style="margin:0px 0px 15px;margin-top:15px;overflow-wrap:break-word;white-space:pre-wrap;">如果是<code style="font-size:12px;font-family:Consolas, monospace, serif;color:rgb(221, 0, 85);white-space:nowrap;padding:0px 4px;border:1px solid rgb(221, 221, 221);border-radius:3px;background:rgb(250, 250, 250);">posix</code>，说明系统是<code style="font-size:12px;font-family:Consolas, monospace, serif;color:rgb(221, 0, 85);white-space:nowrap;padding:0px 4px;border:1px solid rgb(221, 221, 221);border-radius:3px;background:rgb(250, 250, 250);">Linux</code>、<code style="font-size:12px;font-family:Consolas, monospace, serif;color:rgb(221, 0, 85);white-space:nowrap;padding:0px 4px;border:1px solid rgb(221, 221, 221);border-radius:3px;background:rgb(250, 250, 250);">Unix</code>或<code style="font-size:12px;font-family:Consolas, monospace, serif;color:rgb(221, 0, 85);white-space:nowrap;padding:0px 4px;border:1px solid rgb(221, 221, 221);border-radius:3px;background:rgb(250, 250, 250);">Mac OS X</code>，如果是<code style="font-size:12px;font-family:Consolas, monospace, serif;color:rgb(221, 0, 85);white-space:nowrap;padding:0px 4px;border:1px solid rgb(221, 221, 221);border-radius:3px;background:rgb(250, 250, 250);">nt</code>，就是<code style="font-size:12px;font-family:Consolas, monospace, serif;color:rgb(221, 0, 85);white-space:nowrap;padding:0px 4px;border:1px solid rgb(221, 221, 221);border-radius:3px;background:rgb(250, 250, 250);">Windows</code>系统。</p>
+<p style="margin:0px 0px 15px;margin-top:15px;overflow-wrap:break-word;white-space:pre-wrap;">要获取详细的系统信息，可以调用<code style="font-size:12px;font-family:Consolas, monospace, serif;color:rgb(221, 0, 85);white-space:nowrap;padding:0px 4px;border:1px solid rgb(221, 221, 221);border-radius:3px;background:rgb(250, 250, 250);">uname()</code>函数：</p>
+<pre style="overflow:auto;margin:0px 0px 15px;background:rgb(250, 250, 250);font:12px/18px Consolas, monospace, serif;color:rgb(68, 68, 68);tab-size:4;padding:10px;border:1px solid rgb(221, 221, 221);border-radius:3px;margin-top:15px;word-break:break-all;overflow-wrap:break-word;white-space:pre-wrap;"><code><span style="color:rgb(153, 0, 115);">&gt;&gt;&gt; </span>os.uname()
+posix.uname_result(sysname=<span style="color:rgb(221, 17, 68);">'Darwin'</span>, nodename=<span style="color:rgb(221, 17, 68);">'MichaelMacPro.local'</span>, release=<span style="color:rgb(221, 17, 68);">'14.3.0'</span>, version=<span style="color:rgb(221, 17, 68);">'Darwin Kernel Version 14.3.0: Mon Mar 23 11:59:05 PDT 2015; root:xnu-2782.20.48~5/RELEASE_X86_64'</span>, machine=<span style="color:rgb(221, 17, 68);">'x86_64'</span>)
+</code></pre><p style="margin:0px 0px 15px;margin-top:15px;overflow-wrap:break-word;white-space:pre-wrap;">注意<code style="font-size:12px;font-family:Consolas, monospace, serif;color:rgb(221, 0, 85);white-space:nowrap;padding:0px 4px;border:1px solid rgb(221, 221, 221);border-radius:3px;background:rgb(250, 250, 250);">uname()</code>函数在Windows上不提供，也就是说，<code style="font-size:12px;font-family:Consolas, monospace, serif;color:rgb(221, 0, 85);white-space:nowrap;padding:0px 4px;border:1px solid rgb(221, 221, 221);border-radius:3px;background:rgb(250, 250, 250);">os</code>模块的某些函数是跟操作系统相关的。</p>
+<h3 style="margin:0px 0px 15px;font-family:&quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif;font-weight:normal;color:rgb(68, 68, 68);text-transform:none;font-size:18px;line-height:24px;margin-top:25px;"><a name="#-E7-8E-AF-E5-A2-83-E5-8F-98-E9-87-8F" style="background:transparent;color:rgb(5, 147, 211);text-decoration:none;cursor:pointer;"></a>环境变量</h3>
+<p style="margin:0px 0px 15px;margin-top:15px;overflow-wrap:break-word;white-space:pre-wrap;">在操作系统中定义的环境变量，全部保存在<code style="font-size:12px;font-family:Consolas, monospace, serif;color:rgb(221, 0, 85);white-space:nowrap;padding:0px 4px;border:1px solid rgb(221, 221, 221);border-radius:3px;background:rgb(250, 250, 250);">os.environ</code>这个变量中，可以直接查看：</p>
+<pre style="overflow:auto;margin:0px 0px 15px;background:rgb(250, 250, 250);font:12px/18px Consolas, monospace, serif;color:rgb(68, 68, 68);tab-size:4;padding:10px;border:1px solid rgb(221, 221, 221);border-radius:3px;margin-top:15px;word-break:break-all;overflow-wrap:break-word;white-space:pre-wrap;"><code><span style="color:rgb(153, 0, 115);">&gt;&gt;&gt; </span>os.environ
+environ({<span style="color:rgb(221, 17, 68);">'VERSIONER_PYTHON_PREFER_32_BIT'</span>: <span style="color:rgb(221, 17, 68);">'no'</span>, <span style="color:rgb(221, 17, 68);">'TERM_PROGRAM_VERSION'</span>: <span style="color:rgb(221, 17, 68);">'326'</span>, <span style="color:rgb(221, 17, 68);">'LOGNAME'</span>: <span style="color:rgb(221, 17, 68);">'michael'</span>, <span style="color:rgb(221, 17, 68);">'USER'</span>: <span style="color:rgb(221, 17, 68);">'michael'</span>, <span style="color:rgb(221, 17, 68);">'PATH'</span>: <span style="color:rgb(221, 17, 68);">'/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/opt/X11/bin:/usr/local/mysql/bin'</span>, ...})
+</code></pre><p style="margin:0px 0px 15px;margin-top:15px;overflow-wrap:break-word;white-space:pre-wrap;">要获取某个环境变量的值，可以调用<code style="font-size:12px;font-family:Consolas, monospace, serif;color:rgb(221, 0, 85);white-space:nowrap;padding:0px 4px;border:1px solid rgb(221, 221, 221);border-radius:3px;background:rgb(250, 250, 250);">os.environ.get('key')</code>：</p>
+<pre style="overflow:auto;margin:0px 0px 15px;background:rgb(250, 250, 250);font:12px/18px Consolas, monospace, serif;color:rgb(68, 68, 68);tab-size:4;padding:10px;border:1px solid rgb(221, 221, 221);border-radius:3px;margin-top:15px;word-break:break-all;overflow-wrap:break-word;white-space:pre-wrap;"><code><span style="color:rgb(153, 0, 115);">&gt;&gt;&gt; </span>os.environ.get(<span style="color:rgb(221, 17, 68);">'PATH'</span>)
+<span style="color:rgb(221, 17, 68);">'/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/opt/X11/bin:/usr/local/mysql/bin'</span>
+<span style="color:rgb(153, 0, 115);">&gt;&gt;&gt; </span>os.environ.get(<span style="color:rgb(221, 17, 68);">'x'</span>, <span style="color:rgb(221, 17, 68);">'default'</span>)
+<span style="color:rgb(221, 17, 68);">'default'</span>
+</code></pre><h3 style="margin:0px 0px 15px;font-family:&quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif;font-weight:normal;color:rgb(68, 68, 68);text-transform:none;font-size:18px;line-height:24px;margin-top:25px;"><a name="#-E6-93-8D-E4-BD-9C-E6-96-87-E4-BB-B6-E5-92-8C-E7-9B-AE-E5-BD-95" style="background:transparent;color:rgb(5, 147, 211);text-decoration:none;cursor:pointer;"></a>操作文件和目录</h3>
+<p style="margin:0px 0px 15px;margin-top:15px;overflow-wrap:break-word;white-space:pre-wrap;">操作文件和目录的函数一部分放在<code style="font-size:12px;font-family:Consolas, monospace, serif;color:rgb(221, 0, 85);white-space:nowrap;padding:0px 4px;border:1px solid rgb(221, 221, 221);border-radius:3px;background:rgb(250, 250, 250);">os</code>模块中，一部分放在<code style="font-size:12px;font-family:Consolas, monospace, serif;color:rgb(221, 0, 85);white-space:nowrap;padding:0px 4px;border:1px solid rgb(221, 221, 221);border-radius:3px;background:rgb(250, 250, 250);">os.path</code>模块中，这一点要注意一下。查看、创建和删除目录可以这么调用：</p>
+<pre style="overflow:auto;margin:0px 0px 15px;background:rgb(250, 250, 250);font:12px/18px Consolas, monospace, serif;color:rgb(68, 68, 68);tab-size:4;padding:10px;border:1px solid rgb(221, 221, 221);border-radius:3px;margin-top:15px;word-break:break-all;overflow-wrap:break-word;white-space:pre-wrap;"><code><span style="color:rgb(153, 153, 136);font-style:italic;"># 查看当前目录的绝对路径:</span>
+<span style="color:rgb(153, 0, 115);">&gt;&gt;&gt; </span>os.path.abspath(<span style="color:rgb(221, 17, 68);">'.'</span>)
+<span style="color:rgb(221, 17, 68);">'/Users/michael'</span>
+<span style="color:rgb(153, 153, 136);font-style:italic;"># 在某个目录下创建一个新目录，首先把新目录的完整路径表示出来:</span>
+<span style="color:rgb(153, 0, 115);">&gt;&gt;&gt; </span>os.path.join(<span style="color:rgb(221, 17, 68);">'/Users/michael'</span>, <span style="color:rgb(221, 17, 68);">'testdir'</span>)
+<span style="color:rgb(221, 17, 68);">'/Users/michael/testdir'</span>
+<span style="color:rgb(153, 153, 136);font-style:italic;"># 然后创建一个目录:</span>
+<span style="color:rgb(153, 0, 115);">&gt;&gt;&gt; </span>os.mkdir(<span style="color:rgb(221, 17, 68);">'/Users/michael/testdir'</span>)
+<span style="color:rgb(153, 153, 136);font-style:italic;"># 删掉一个目录:</span>
+<span style="color:rgb(153, 0, 115);">&gt;&gt;&gt; </span>os.rmdir(<span style="color:rgb(221, 17, 68);">'/Users/michael/testdir'</span>)
+</code></pre><p style="margin:0px 0px 15px;margin-top:15px;overflow-wrap:break-word;white-space:pre-wrap;">把两个路径合成一个时，不要直接拼字符串，而要通过<code style="font-size:12px;font-family:Consolas, monospace, serif;color:rgb(221, 0, 85);white-space:nowrap;padding:0px 4px;border:1px solid rgb(221, 221, 221);border-radius:3px;background:rgb(250, 250, 250);">os.path.join()</code>函数，这样可以正确处理不同操作系统的路径分隔符。在Linux/Unix/Mac下，<code style="font-size:12px;font-family:Consolas, monospace, serif;color:rgb(221, 0, 85);white-space:nowrap;padding:0px 4px;border:1px solid rgb(221, 221, 221);border-radius:3px;background:rgb(250, 250, 250);">os.path.join()</code>返回这样的字符串：</p>
+<pre style="overflow:auto;margin:0px 0px 15px;background:rgb(250, 250, 250);font:12px/18px Consolas, monospace, serif;color:rgb(68, 68, 68);tab-size:4;padding:10px;border:1px solid rgb(221, 221, 221);border-radius:3px;margin-top:15px;word-break:break-all;overflow-wrap:break-word;white-space:pre-wrap;"><code>part-1/part-2
+</code></pre><p style="margin:0px 0px 15px;margin-top:15px;overflow-wrap:break-word;white-space:pre-wrap;">而Windows下会返回这样的字符串：</p>
+<pre style="overflow:auto;margin:0px 0px 15px;background:rgb(250, 250, 250);font:12px/18px Consolas, monospace, serif;color:rgb(68, 68, 68);tab-size:4;padding:10px;border:1px solid rgb(221, 221, 221);border-radius:3px;margin-top:15px;word-break:break-all;overflow-wrap:break-word;white-space:pre-wrap;"><code>part-1\part-2
+</code></pre><p style="margin:0px 0px 15px;margin-top:15px;overflow-wrap:break-word;white-space:pre-wrap;">同样的道理，要拆分路径时，也不要直接去拆字符串，而要通过<code style="font-size:12px;font-family:Consolas, monospace, serif;color:rgb(221, 0, 85);white-space:nowrap;padding:0px 4px;border:1px solid rgb(221, 221, 221);border-radius:3px;background:rgb(250, 250, 250);">os.path.split()</code>函数，这样可以把一个路径拆分为两部分，后一部分总是最后级别的目录或文件名：</p>
+<pre style="overflow:auto;margin:0px 0px 15px;background:rgb(250, 250, 250);font:12px/18px Consolas, monospace, serif;color:rgb(68, 68, 68);tab-size:4;padding:10px;border:1px solid rgb(221, 221, 221);border-radius:3px;margin-top:15px;word-break:break-all;overflow-wrap:break-word;white-space:pre-wrap;"><code><span style="color:rgb(153, 0, 115);">&gt;&gt;&gt; </span>os.path.split(<span style="color:rgb(221, 17, 68);">'/Users/michael/testdir/file.txt'</span>)
+(<span style="color:rgb(221, 17, 68);">'/Users/michael/testdir'</span>, <span style="color:rgb(221, 17, 68);">'file.txt'</span>)
+</code></pre><p style="margin:0px 0px 15px;margin-top:15px;overflow-wrap:break-word;white-space:pre-wrap;"><code style="font-size:12px;font-family:Consolas, monospace, serif;color:rgb(221, 0, 85);white-space:nowrap;padding:0px 4px;border:1px solid rgb(221, 221, 221);border-radius:3px;background:rgb(250, 250, 250);">os.path.splitext()</code>可以直接让你得到文件扩展名，很多时候非常方便：</p>
+<pre style="overflow:auto;margin:0px 0px 15px;background:rgb(250, 250, 250);font:12px/18px Consolas, monospace, serif;color:rgb(68, 68, 68);tab-size:4;padding:10px;border:1px solid rgb(221, 221, 221);border-radius:3px;margin-top:15px;word-break:break-all;overflow-wrap:break-word;white-space:pre-wrap;"><code><span style="color:rgb(153, 0, 115);">&gt;&gt;&gt; </span>os.path.splitext(<span style="color:rgb(221, 17, 68);">'/path/to/file.txt'</span>)
+(<span style="color:rgb(221, 17, 68);">'/path/to/file'</span>, <span style="color:rgb(221, 17, 68);">'.txt'</span>)
+</code></pre><p style="margin:0px 0px 15px;margin-top:15px;overflow-wrap:break-word;white-space:pre-wrap;">这些合并、拆分路径的函数并不要求目录和文件要真实存在，它们只对字符串进行操作。</p>
+<p style="margin:0px 0px 15px;margin-top:15px;overflow-wrap:break-word;white-space:pre-wrap;">文件操作使用下面的函数。假定当前目录下有一个<code style="font-size:12px;font-family:Consolas, monospace, serif;color:rgb(221, 0, 85);white-space:nowrap;padding:0px 4px;border:1px solid rgb(221, 221, 221);border-radius:3px;background:rgb(250, 250, 250);">test.txt</code>文件：</p>
+<pre style="overflow:auto;margin:0px 0px 15px;background:rgb(250, 250, 250);font:12px/18px Consolas, monospace, serif;color:rgb(68, 68, 68);tab-size:4;padding:10px;border:1px solid rgb(221, 221, 221);border-radius:3px;margin-top:15px;word-break:break-all;overflow-wrap:break-word;white-space:pre-wrap;"><code><span style="color:rgb(153, 153, 136);font-style:italic;"># 对文件重命名:</span>
+<span style="color:rgb(153, 0, 115);">&gt;&gt;&gt; </span>os.rename(<span style="color:rgb(221, 17, 68);">'test.txt'</span>, <span style="color:rgb(221, 17, 68);">'test.py'</span>)
+<span style="color:rgb(153, 153, 136);font-style:italic;"># 删掉文件:</span>
+<span style="color:rgb(153, 0, 115);">&gt;&gt;&gt; </span>os.remove(<span style="color:rgb(221, 17, 68);">'test.py'</span>)
+</code></pre><p style="margin:0px 0px 15px;margin-top:15px;overflow-wrap:break-word;white-space:pre-wrap;">但是复制文件的函数居然在<code style="font-size:12px;font-family:Consolas, monospace, serif;color:rgb(221, 0, 85);white-space:nowrap;padding:0px 4px;border:1px solid rgb(221, 221, 221);border-radius:3px;background:rgb(250, 250, 250);">os</code>模块中不存在！原因是复制文件并非由操作系统提供的系统调用。理论上讲，我们通过上一节的读写文件可以完成文件复制，只不过要多写很多代码。</p>
+<p style="margin:0px 0px 15px;margin-top:15px;overflow-wrap:break-word;white-space:pre-wrap;">幸运的是<code style="font-size:12px;font-family:Consolas, monospace, serif;color:rgb(221, 0, 85);white-space:nowrap;padding:0px 4px;border:1px solid rgb(221, 221, 221);border-radius:3px;background:rgb(250, 250, 250);">shutil</code>模块提供了<code style="font-size:12px;font-family:Consolas, monospace, serif;color:rgb(221, 0, 85);white-space:nowrap;padding:0px 4px;border:1px solid rgb(221, 221, 221);border-radius:3px;background:rgb(250, 250, 250);">copyfile()</code>的函数，你还可以在<code style="font-size:12px;font-family:Consolas, monospace, serif;color:rgb(221, 0, 85);white-space:nowrap;padding:0px 4px;border:1px solid rgb(221, 221, 221);border-radius:3px;background:rgb(250, 250, 250);">shutil</code>模块中找到很多实用函数，它们可以看做是<code style="font-size:12px;font-family:Consolas, monospace, serif;color:rgb(221, 0, 85);white-space:nowrap;padding:0px 4px;border:1px solid rgb(221, 221, 221);border-radius:3px;background:rgb(250, 250, 250);">os</code>模块的补充。</p>
+<p style="margin:0px 0px 15px;margin-top:15px;overflow-wrap:break-word;white-space:pre-wrap;">最后看看如何利用Python的特性来过滤文件。比如我们要列出当前目录下的所有目录，只需要一行代码：</p>
+<pre style="overflow:auto;margin:0px 0px 15px;background:rgb(250, 250, 250);font:12px/18px Consolas, monospace, serif;color:rgb(68, 68, 68);tab-size:4;padding:10px;border:1px solid rgb(221, 221, 221);border-radius:3px;margin-top:15px;word-break:break-all;overflow-wrap:break-word;white-space:pre-wrap;"><code><span style="color:rgb(153, 0, 115);">&gt;&gt;&gt; </span>[x <span style="color:rgb(51, 51, 51);font-weight:bold;">for</span> x <span style="color:rgb(51, 51, 51);font-weight:bold;">in</span> os.listdir(<span style="color:rgb(221, 17, 68);">'.'</span>) <span style="color:rgb(51, 51, 51);font-weight:bold;">if</span> os.path.isdir(x)]
+[<span style="color:rgb(221, 17, 68);">'.lein'</span>, <span style="color:rgb(221, 17, 68);">'.local'</span>, <span style="color:rgb(221, 17, 68);">'.m2'</span>, <span style="color:rgb(221, 17, 68);">'.npm'</span>, <span style="color:rgb(221, 17, 68);">'.ssh'</span>, <span style="color:rgb(221, 17, 68);">'.Trash'</span>, <span style="color:rgb(221, 17, 68);">'.vim'</span>, <span style="color:rgb(221, 17, 68);">'Applications'</span>, <span style="color:rgb(221, 17, 68);">'Desktop'</span>, ...]
+</code></pre><p style="margin:0px 0px 15px;margin-top:15px;overflow-wrap:break-word;white-space:pre-wrap;">要列出所有的<code style="font-size:12px;font-family:Consolas, monospace, serif;color:rgb(221, 0, 85);white-space:nowrap;padding:0px 4px;border:1px solid rgb(221, 221, 221);border-radius:3px;background:rgb(250, 250, 250);">.py</code>文件，也只需一行代码：</p>
+<pre style="overflow:auto;margin:0px 0px 15px;background:rgb(250, 250, 250);font:12px/18px Consolas, monospace, serif;color:rgb(68, 68, 68);tab-size:4;padding:10px;border:1px solid rgb(221, 221, 221);border-radius:3px;margin-top:15px;word-break:break-all;overflow-wrap:break-word;white-space:pre-wrap;"><code><span style="color:rgb(153, 0, 115);">&gt;&gt;&gt; </span>[x <span style="color:rgb(51, 51, 51);font-weight:bold;">for</span> x <span style="color:rgb(51, 51, 51);font-weight:bold;">in</span> os.listdir(<span style="color:rgb(221, 17, 68);">'.'</span>) <span style="color:rgb(51, 51, 51);font-weight:bold;">if</span> os.path.isfile(x) <span style="color:rgb(51, 51, 51);font-weight:bold;">and</span> os.path.splitext(x)[<span style="color:rgb(0, 153, 153);">1</span>]==<span style="color:rgb(221, 17, 68);">'.py'</span>]
+[<span style="color:rgb(221, 17, 68);">'apis.py'</span>, <span style="color:rgb(221, 17, 68);">'config.py'</span>, <span style="color:rgb(221, 17, 68);">'models.py'</span>, <span style="color:rgb(221, 17, 68);">'pymonitor.py'</span>, <span style="color:rgb(221, 17, 68);">'test_db.py'</span>, <span style="color:rgb(221, 17, 68);">'urls.py'</span>, <span style="color:rgb(221, 17, 68);">'wsgiapp.py'</span>]
+</code></pre><p style="margin:0px 0px 15px;margin-top:15px;overflow-wrap:break-word;white-space:pre-wrap;">是不是非常简洁？</p>
+<h3 style="margin:0px 0px 15px;font-family:&quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif;font-weight:normal;color:rgb(68, 68, 68);text-transform:none;font-size:18px;line-height:24px;margin-top:25px;"><a name="#-E5-B0-8F-E7-BB-93" style="background:transparent;color:rgb(5, 147, 211);text-decoration:none;cursor:pointer;"></a>小结</h3>
+<p style="margin:0px 0px 15px;margin-top:15px;overflow-wrap:break-word;white-space:pre-wrap;">Python的<code style="font-size:12px;font-family:Consolas, monospace, serif;color:rgb(221, 0, 85);white-space:nowrap;padding:0px 4px;border:1px solid rgb(221, 221, 221);border-radius:3px;background:rgb(250, 250, 250);">os</code>模块封装了操作系统的目录和文件操作，要注意这些函数有的在<code style="font-size:12px;font-family:Consolas, monospace, serif;color:rgb(221, 0, 85);white-space:nowrap;padding:0px 4px;border:1px solid rgb(221, 221, 221);border-radius:3px;background:rgb(250, 250, 250);">os</code>模块中，有的在<code style="font-size:12px;font-family:Consolas, monospace, serif;color:rgb(221, 0, 85);white-space:nowrap;padding:0px 4px;border:1px solid rgb(221, 221, 221);border-radius:3px;background:rgb(250, 250, 250);">os.path</code>模块中。</p>
+<h3 style="margin:0px 0px 15px;font-family:&quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif;font-weight:normal;color:rgb(68, 68, 68);text-transform:none;font-size:18px;line-height:24px;margin-top:25px;"><a name="#-E7-BB-83-E4-B9-A0" style="background:transparent;color:rgb(5, 147, 211);text-decoration:none;cursor:pointer;"></a>练习</h3>
+<ol style="margin:0px 0px 15px;padding-left:30px;margin-top:15px;">
+<li><p style="margin:0px 0px 15px;overflow-wrap:break-word;white-space:pre-wrap;">利用<code style="font-size:12px;font-family:Consolas, monospace, serif;color:rgb(221, 0, 85);white-space:nowrap;padding:0px 4px;border:1px solid rgb(221, 221, 221);border-radius:3px;background:rgb(250, 250, 250);">os</code>模块编写一个能实现<code style="font-size:12px;font-family:Consolas, monospace, serif;color:rgb(221, 0, 85);white-space:nowrap;padding:0px 4px;border:1px solid rgb(221, 221, 221);border-radius:3px;background:rgb(250, 250, 250);">dir -l</code>输出的程序。</p>
+</li>
+<li><p style="margin:0px 0px 15px;overflow-wrap:break-word;white-space:pre-wrap;">编写一个程序，能在当前目录以及当前目录的所有子目录下查找文件名包含指定字符串的文件，并打印出相对路径。</p>
+</li>
+</ol>
+<h3 style="margin:0px 0px 15px;font-family:&quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif;font-weight:normal;color:rgb(68, 68, 68);text-transform:none;font-size:18px;line-height:24px;margin-top:25px;"><a name="#-E5-8F-82-E8-80-83-E6-BA-90-E7-A0-81" style="background:transparent;color:rgb(5, 147, 211);text-decoration:none;cursor:pointer;"></a>参考源码</h3>
+<p style="margin:0px 0px 15px;margin-top:15px;overflow-wrap:break-word;white-space:pre-wrap;"><a href="https://github.com/michaelliao/learn-python3/blob/master/samples/io/do_dir.py" style="background:transparent;color:rgb(5, 147, 211);text-decoration:none;cursor:pointer;" target="_blank">do_dir</a></p>
+</div><h3 style="margin:0px 0px 15px;font-family:&quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif;font-weight:normal;color:rgb(68, 68, 68);text-transform:none;font-size:18px;line-height:24px;margin-top:25px;">感觉本站内容不错，读后有收获？</h3><p style="margin:0px 0px 15px;margin-top:15px;overflow-wrap:break-word;white-space:pre-wrap;"><a href="https://www.liaoxuefeng.com/webpage/donate" style="display:inline-block;background:rgb(245, 245, 245);text-decoration:none;box-shadow:rgba(0, 0, 0, 0.05) 0px 0px 5px inset;-webkit-appearance:none;margin:0px;overflow:visible;font-style:inherit;font-variant:inherit;font-weight:inherit;font-stretch:inherit;font-family:inherit;text-transform:none;color:rgb(255, 255, 255);box-sizing:border-box;padding:0px 12px;vertical-align:middle;line-height:28px;min-height:30px;font-size:1rem;text-align:center;border:1px solid rgba(0, 0, 0, 0.06);border-radius:4px;text-shadow:rgba(0, 0, 0, 0.1) 0px -1px 0px;background-color:rgb(0, 168, 230);cursor:pointer;" target="_blank"><i style="font-family:FontAwesome;display:inline-block;font-weight:normal;font-style:normal;line-height:1;-webkit-font-smoothing:antialiased;text-decoration:none;"><span style="font-family:FontAwesome;font-weight:normal;font-style:normal;line-height:1;"></span></i> 我要小额赞助，鼓励作者写出更好的教程</a></p><h3 style="margin:0px 0px 15px;font-family:&quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif;font-weight:normal;color:rgb(68, 68, 68);text-transform:none;font-size:18px;line-height:24px;margin-top:25px;">还可以分享给朋友</h3><p style="margin:0px 0px 15px;margin-top:15px;overflow-wrap:break-word;white-space:pre-wrap;"><a href="https://www.liaoxuefeng.com/wiki/0014316089557264a6b348958f449949df42a6d3a2e542c000/001431925324119bac1bc7979664b4fa9843c0e5fcdcf1e000#0" style="display:inline-block;background:rgb(245, 245, 245);text-decoration:none;box-shadow:rgba(0, 0, 0, 0.05) 0px 0px 5px inset;-webkit-appearance:none;margin:0px;overflow:visible;font-style:inherit;font-variant:inherit;font-weight:inherit;font-stretch:inherit;font-family:inherit;text-transform:none;color:rgb(255, 255, 255);box-sizing:border-box;padding:0px 12px;vertical-align:middle;line-height:28px;min-height:30px;font-size:1rem;text-align:center;border:1px solid rgba(0, 0, 0, 0.06);border-radius:4px;text-shadow:rgba(0, 0, 0, 0.1) 0px -1px 0px;background-color:rgb(218, 49, 75);cursor:pointer;"><i style="font-family:FontAwesome;display:inline-block;font-weight:normal;font-style:normal;line-height:1;-webkit-font-smoothing:antialiased;text-decoration:none;"><span style="font-family:FontAwesome;font-weight:normal;font-style:normal;line-height:1;"></span></i> 分享到微博</a></p>
+
+    <hr style="border-left-style:initial;box-sizing:content-box;margin:15px 0px;border-width:1px 0px 0px;border-right-style:initial;border-bottom-style:initial;height:0px;border-right-color:initial;border-bottom-color:initial;border-left-color:initial;border-image:initial;border-top-style:solid;border-top-color:rgb(221, 221, 221);"/>
+
+    <div style="padding-left:15px;padding-right:15px;"><span style="display:table-cell;"></span><a href="https://www.liaoxuefeng.com/wiki/0014316089557264a6b348958f449949df42a6d3a2e542c000/001431918785710e86a1a120ce04925bae155012c7fc71e000" style="background:transparent;color:rgb(5, 147, 211);text-decoration:none;cursor:pointer;"><i style="font-family:FontAwesome;display:inline-block;font-weight:normal;font-style:normal;line-height:1;-webkit-font-smoothing:antialiased;text-decoration:none;"><span style="font-family:FontAwesome;font-weight:normal;font-style:normal;line-height:1;"></span></i> 上一页</a><a href="https://www.liaoxuefeng.com/wiki/0014316089557264a6b348958f449949df42a6d3a2e542c000/00143192607210600a668b5112e4a979dd20e4661cc9c97000" style="background:transparent;color:rgb(5, 147, 211);text-decoration:none;cursor:pointer;float:right;max-width:100%;">下一页 <i style="font-family:FontAwesome;display:inline-block;font-weight:normal;font-style:normal;line-height:1;-webkit-font-smoothing:antialiased;text-decoration:none;"><span style="font-family:FontAwesome;font-weight:normal;font-style:normal;line-height:1;"></span></i></a><span style="display:table;clear:both;"></span></div><hr style="border-left-style:initial;box-sizing:content-box;margin:15px 0px;border-width:1px 0px 0px;border-right-style:initial;border-bottom-style:initial;height:0px;border-right-color:initial;border-bottom-color:initial;border-left-color:initial;border-image:initial;border-top-style:solid;border-top-color:rgb(221, 221, 221);"/>
+
+    <div><span style="display:table-cell;"></span><div style="float:left;margin:0 0 -1px -1px;border:solid 1px #ddd;width:336px;height:280px;"><a href="http://www.zhufengpeixun.cn/main/course/index.html?ref=liaoxuefeng" style="background:transparent;color:rgb(5, 147, 211);text-decoration:none;cursor:pointer;" target="_blank"><img src="操作文件和目录_files/0.jpg" type="image/jpeg" data-filename="0.jpg" height="280" style="vertical-align:middle;max-width:100%;height:auto;box-sizing:border-box;border:0px;" width="336"/></a></div><div style="float:left;margin:0 0 -1px -1px;border:solid 1px #ddd;width:336px;height:280px;"><a href="https://www.luffycity.com/home/camp?source=liaoxuefeng2" style="background:transparent;color:rgb(5, 147, 211);text-decoration:none;cursor:pointer;" target="_blank"><img src="操作文件和目录_files/0 [1].jpg" type="image/jpeg" data-filename="0.jpg" height="280" style="vertical-align:middle;max-width:100%;height:auto;box-sizing:border-box;border:0px;" width="336"/></a></div><div style="float:left;margin:0 0 -1px -1px;border:solid 1px #ddd;width:336px;height:280px;"><a href="http://pro.kaikeba.com/course/python?ss=fs1" style="background:transparent;color:rgb(5, 147, 211);text-decoration:none;cursor:pointer;" target="_blank"><img src="操作文件和目录_files/0 [2].jpg" type="image/jpeg" data-filename="0.jpg" height="280" style="vertical-align:middle;max-width:100%;height:auto;box-sizing:border-box;border:0px;" width="336"/></a></div><div style="float:left;margin:0 0 -1px -1px;border:solid 1px #ddd;width:336px;height:280px;"><a href="http://pro.kaikeba.com/course/web?ss=ss1" style="background:transparent;color:rgb(5, 147, 211);text-decoration:none;cursor:pointer;" target="_blank"><img src="操作文件和目录_files/0 [3].jpg" type="image/jpeg" data-filename="0.jpg" height="280" style="vertical-align:middle;max-width:100%;height:auto;box-sizing:border-box;border:0px;" width="336"/></a></div><div style="float:left;margin:0 0 -1px -1px;border:solid 1px #ddd;width:336px;height:280px;"><ins style="background:rgb(255, 255, 170);color:rgb(68, 68, 68);text-decoration:none;background-color:transparent;display:inline-block;width:336px;height:280px;"><ins style="height:280px;background:rgb(255, 255, 170);text-decoration:none;background-color:transparent;display:inline-table;border:none;color:rgb(68, 68, 68);margin:0;padding:0;position:relative;visibility:visible;width:336px;"><ins style="height:280px;background:rgb(255, 255, 170);text-decoration:none;background-color:transparent;display:block;border:none;color:rgb(68, 68, 68);margin:0;padding:0;position:relative;visibility:visible;width:336px;"><div style="vertical-align:middle;border:0px;left:0;position:absolute;top:0;width:336px;height:280px;"></div></ins></ins></ins>
+</div><div style="float:left;margin:0 0 -1px -1px;border:solid 1px #ddd;width:336px;height:280px;"><ins style="background:rgb(255, 255, 170);color:rgb(68, 68, 68);text-decoration:none;background-color:transparent;display:inline-block;width:336px;height:280px;"><ins style="height:280px;background:rgb(255, 255, 170);text-decoration:none;background-color:transparent;display:inline-table;border:none;color:rgb(68, 68, 68);margin:0;padding:0;position:relative;visibility:visible;width:336px;"><ins style="height:280px;background:rgb(255, 255, 170);text-decoration:none;background-color:transparent;display:block;border:none;color:rgb(68, 68, 68);margin:0;padding:0;position:relative;visibility:visible;width:336px;"><div style="vertical-align:middle;border:0px;left:0;position:absolute;top:0;width:336px;height:280px;"></div></ins></ins></ins>
+</div><span style="display:table;clear:both;"></span></div>
+
+    <div style="position:relative;"><a name="comments" style="background:transparent;color:rgb(5, 147, 211);text-decoration:none;cursor:pointer;position:absolute;top:-65px;"></a></div>
+
+    <h3 style="margin:0px 0px 15px;font-family:&quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif;font-weight:normal;color:rgb(68, 68, 68);text-transform:none;font-size:18px;line-height:24px;margin-top:25px;">评论</h3>
+
+    <ul style="margin:0px 0px 15px;margin-top:15px;padding:0px;list-style:none;"><li>
+        <div>
+            <div style="margin-bottom:0;background:transparent;padding:10px;border-right:none;border-bottom:none;border-left:none;border-image:initial;border-top:1px solid rgb(221, 221, 221);border-radius:0px;"><span style="display:table;"></span>
+                <a href="https://www.liaoxuefeng.com/user/00153172457621185cdfc6986ba408d9ab7b7391f3d9f4f000" style="background:transparent;color:rgb(5, 147, 211);text-decoration:none;cursor:pointer;" target="_blank"><img src="操作文件和目录_files/86547d56jw8el2vnsivw2j20hs0hqt9h.jpg" type="image/jpeg" data-filename="86547d56jw8el2vnsivw2j20hs0hqt9h.jpg" alt="" height="50" style="vertical-align:middle;max-width:100%;height:auto;box-sizing:border-box;border:1px solid rgb(221, 221, 221);margin-right:15px;float:left;border-radius:50%;" width="50"/></a>
+                <h4 style="font-family:&quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif;font-weight:normal;color:rgb(68, 68, 68);text-transform:none;margin:5px 0px 0px;font-size:16px;line-height:22px;"><a href="https://www.liaoxuefeng.com/discuss/001409195742008d822b26cf3de46aea14f2b7378a1ba91000/001540539994364e678f1f1736e41ca89a08f40000e4c7f000" style="background:transparent;color:rgb(5, 147, 211);text-decoration:none;cursor:pointer;" target="_blank">列出目录及子目录下的全部文件和目录绝对地址</a></h4>
+                <div style="margin:2px 0px 0px;font-size:11px;line-height:16px;color:rgb(153, 153, 153);"><a href="https://www.liaoxuefeng.com/user/00153172457621185cdfc6986ba408d9ab7b7391f3d9f4f000" style="background:transparent;color:rgb(5, 147, 211);text-decoration:none;cursor:pointer;" target="_blank">有人不知道是谁</a> created at 3天前, Last updated at 3天前</div>
+            <span style="display:table;clear:both;"></span></div>
+            <div style="padding-right:10px;padding-left:75px;word-break:break-all;">
+                <pre style="overflow:auto;margin:0px 0px 15px;background:rgb(250, 250, 250);font:12px/18px Consolas, monospace, serif;color:rgb(68, 68, 68);tab-size:4;padding:10px;border:1px solid rgb(221, 221, 221);border-radius:3px;word-break:break-all;overflow-wrap:break-word;white-space:pre-wrap;margin-bottom:0px;"><code># 列出目录及子目录下的全部文件和目录绝对地址
+import os
+def scanDir(path=os.curdir):
+    path = os.path.realpath(path)
+    __list = []
+    for item in os.listdir(path):
+        item = os.path.join(path, item)
+        # @todo 查找、过滤等
+        if os.path.isdir(item):
+            __list += scanDir(item)
+        else:
+            __list.append(item)
+    return __list
+</code></pre>
+
+            </div>
+        </div>
+    <ul style="padding-left:30px;margin:25px 0px 0px;list-style:none;">
+        <li>
+            <div>
+                <hr style="border-left-style:initial;box-sizing:content-box;margin:15px 0px;border-width:1px 0px 0px;border-right-style:initial;border-bottom-style:initial;height:0px;border-right-color:initial;border-bottom-color:initial;border-left-color:initial;border-image:initial;border-top-style:solid;border-top-color:rgb(221, 221, 221);"/>
+                <a href="https://www.liaoxuefeng.com/discuss/001409195742008d822b26cf3de46aea14f2b7378a1ba91000/001540539994364e678f1f1736e41ca89a08f40000e4c7f000" style="text-transform:none;background:rgb(245, 245, 245);text-decoration:none;border-radius:4px;-webkit-appearance:none;margin:0px;overflow:visible;font-style:inherit;font-variant:inherit;font-weight:inherit;font-stretch:inherit;font-family:inherit;color:rgb(68, 68, 68);display:inline-block;box-sizing:border-box;padding:0px 10px;vertical-align:middle;line-height:23px;min-height:25px;font-size:12px;text-align:center;border:1px solid rgba(0, 0, 0, 0.06);text-shadow:rgb(255, 255, 255) 0px 1px 0px;cursor:pointer;" target="_blank"><i style="font-family:FontAwesome;display:inline-block;font-weight:normal;font-style:normal;line-height:1;-webkit-font-smoothing:antialiased;text-decoration:none;"><span style="font-family:FontAwesome;font-weight:normal;font-style:normal;line-height:1;"></span></i> 全部讨论</a>
+                 
+                <a href="https://www.liaoxuefeng.com/discuss/001409195742008d822b26cf3de46aea14f2b7378a1ba91000/001540539994364e678f1f1736e41ca89a08f40000e4c7f000#reply" style="text-transform:none;background:rgb(245, 245, 245);text-decoration:none;border-radius:4px;-webkit-appearance:none;margin:0px;overflow:visible;font-style:inherit;font-variant:inherit;font-weight:inherit;font-stretch:inherit;font-family:inherit;color:rgb(68, 68, 68);display:inline-block;box-sizing:border-box;padding:0px 10px;vertical-align:middle;line-height:23px;min-height:25px;font-size:12px;text-align:center;border:1px solid rgba(0, 0, 0, 0.06);text-shadow:rgb(255, 255, 255) 0px 1px 0px;cursor:pointer;" target="_blank"><i style="font-family:FontAwesome;display:inline-block;font-weight:normal;font-style:normal;line-height:1;-webkit-font-smoothing:antialiased;text-decoration:none;"><span style="font-family:FontAwesome;font-weight:normal;font-style:normal;line-height:1;"></span></i> 回复</a>
+            </div>
+        </li>
+    </ul></li><li style="margin-top:25px;">
+        <div>
+            <div style="margin-bottom:0;background:transparent;padding:10px;border-right:none;border-bottom:none;border-left:none;border-image:initial;border-top:1px solid rgb(221, 221, 221);border-radius:0px;"><span style="display:table;"></span>
+                <a href="https://www.liaoxuefeng.com/user/00147736421950906307fa4ac3945cea382623d6365c0a9000" style="background:transparent;color:rgb(5, 147, 211);text-decoration:none;cursor:pointer;" target="_blank"><img src="操作文件和目录_files/90ef6dadjw8eswh1spl31j20yi0yi0uz.jpg" type="image/jpeg" data-filename="90ef6dadjw8eswh1spl31j20yi0yi0uz.jpg" alt="" height="50" style="vertical-align:middle;max-width:100%;height:auto;box-sizing:border-box;border:1px solid rgb(221, 221, 221);margin-right:15px;float:left;border-radius:50%;" width="50"/></a>
+                <h4 style="font-family:&quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif;font-weight:normal;color:rgb(68, 68, 68);text-transform:none;margin:5px 0px 0px;font-size:16px;line-height:22px;"><a href="https://www.liaoxuefeng.com/discuss/001409195742008d822b26cf3de46aea14f2b7378a1ba91000/001540455229645e69e29e7555146b79e874b5699b647aa000" style="background:transparent;color:rgb(5, 147, 211);text-decoration:none;cursor:pointer;" target="_blank">查文件</a></h4>
+                <div style="margin:2px 0px 0px;font-size:11px;line-height:16px;color:rgb(153, 153, 153);"><a href="https://www.liaoxuefeng.com/user/00147736421950906307fa4ac3945cea382623d6365c0a9000" style="background:transparent;color:rgb(5, 147, 211);text-decoration:none;cursor:pointer;" target="_blank">Mr_ray_H</a> created at 4天前, Last updated at 4天前</div>
+            <span style="display:table;clear:both;"></span></div>
+            <div style="padding-right:10px;padding-left:75px;word-break:break-all;">
+                <p style="margin:0px 0px 15px;overflow-wrap:break-word;white-space:pre-wrap;">import os</p>
+<p style="margin:0px 0px 15px;margin-top:15px;overflow-wrap:break-word;white-space:pre-wrap;">def FindFile(findstr='',dirPath='.'):</p>
+<pre style="border:1px solid rgb(221, 221, 221);margin:0px 0px 15px;background:rgb(250, 250, 250);font:12px/18px Consolas, monospace, serif;color:rgb(68, 68, 68);tab-size:4;overflow:auto;padding:10px;border-radius:3px;margin-top:15px;word-break:break-all;overflow-wrap:break-word;white-space:pre-wrap;margin-bottom:0px;"><code>#可选参数目录dir默认为当前目录,可选参数findstr 为要查找的指定字符串，不填则查询所有文件
+
+#创建一个最后文件路径和目录路径的列表
+file_paths=[]
+#使用walk方法,os.walk是个生成器
+
+for root,dirs,files in os.walk(dirPath):
+    for filename in files:
+        if findstr in filename:
+            file_paths.append(os.path.join(root,filename))
+return file_paths
+</code></pre>
+            </div>
+        </div>
+    <ul style="padding-left:30px;margin:25px 0px 0px;list-style:none;"><li>
+        <div>
+            <div style="margin-bottom:0;background:transparent;padding:10px;border-right:none;border-bottom:none;border-left:none;border-image:initial;border-top:1px solid rgb(221, 221, 221);border-radius:0px;"><span style="display:table;"></span>
+                <a href="https://www.liaoxuefeng.com/user/00147736421950906307fa4ac3945cea382623d6365c0a9000" style="background:transparent;color:rgb(5, 147, 211);text-decoration:none;cursor:pointer;" target="_blank"><img src="操作文件和目录_files/90ef6dadjw8eswh1spl31j20yi0yi0uz [1].jpg" type="image/jpeg" data-filename="90ef6dadjw8eswh1spl31j20yi0yi0uz.jpg" alt="" height="50" style="vertical-align:middle;max-width:100%;height:auto;box-sizing:border-box;border:1px solid rgb(221, 221, 221);margin-right:15px;float:left;border-radius:50%;" width="50"/></a>
+                <div style="margin:2px 0px 0px;font-size:11px;line-height:16px;color:rgb(153, 153, 153);"><a href="https://www.liaoxuefeng.com/user/00147736421950906307fa4ac3945cea382623d6365c0a9000" style="background:transparent;color:rgb(5, 147, 211);text-decoration:none;cursor:pointer;" target="_blank">Mr_ray_H</a></div>
+                <div style="margin:2px 0px 0px;font-size:11px;line-height:16px;color:rgb(153, 153, 153);">Created at 4天前, Last updated at 4天前</div>
+            <span style="display:table;clear:both;"></span></div>
+            <div style="padding-right:10px;padding-left:75px;word-break:break-all;">
+                <pre style="overflow:auto;margin:0px 0px 15px;background:rgb(250, 250, 250);font:12px/18px Consolas, monospace, serif;color:rgb(68, 68, 68);tab-size:4;padding:10px;border:1px solid rgb(221, 221, 221);border-radius:3px;word-break:break-all;overflow-wrap:break-word;white-space:pre-wrap;margin-bottom:0px;"><code>import os
+
+def FindFile(findstr='',dirPath='.'):
+#可选参数目录dir为当前目录,必要参数findstr 为要查找的指定字符串
+
+#创建一个最后文件路径和目录路径的列表
+file_paths=[]
+dir_paths=[]
+
+#使用walk方法,os.walk是个生成器
+# os.walk(top[, topdown=True[, onerror=None[, followlinks=False]]])
+#top -- 是你所要遍历的目录的地址, 返回的是一个三元组(root,dirs,files)。
+# root 所指的是当前正在遍历的这个文件夹的本身的地址
+# dirs 是一个 list ，内容是该文件夹中所有的目录的名字(不包括子目录)
+# files 同样是 list , 内容是该文件夹中所有的文件(不包括子目录)
+for root,dirs,files in os.walk(dirPath):
+    for filename in files:
+        if findstr in filename:
+            file_paths.append(os.path.join(root,filename))
+    for dirname in dirs:
+        dir_paths.append(os.path.join(root,dirname))
+return file_paths
+</code></pre>
+            </div>
+        </div>
+    </li>
+        <li style="margin-top:25px;">
+            <div>
+                <hr style="border-left-style:initial;box-sizing:content-box;margin:15px 0px;border-width:1px 0px 0px;border-right-style:initial;border-bottom-style:initial;height:0px;border-right-color:initial;border-bottom-color:initial;border-left-color:initial;border-image:initial;border-top-style:solid;border-top-color:rgb(221, 221, 221);"/>
+                <a href="https://www.liaoxuefeng.com/discuss/001409195742008d822b26cf3de46aea14f2b7378a1ba91000/001540455229645e69e29e7555146b79e874b5699b647aa000" style="text-transform:none;background:rgb(245, 245, 245);text-decoration:none;border-radius:4px;-webkit-appearance:none;margin:0px;overflow:visible;font-style:inherit;font-variant:inherit;font-weight:inherit;font-stretch:inherit;font-family:inherit;color:rgb(68, 68, 68);display:inline-block;box-sizing:border-box;padding:0px 10px;vertical-align:middle;line-height:23px;min-height:25px;font-size:12px;text-align:center;border:1px solid rgba(0, 0, 0, 0.06);text-shadow:rgb(255, 255, 255) 0px 1px 0px;cursor:pointer;" target="_blank"><i style="font-family:FontAwesome;display:inline-block;font-weight:normal;font-style:normal;line-height:1;-webkit-font-smoothing:antialiased;text-decoration:none;"><span style="font-family:FontAwesome;font-weight:normal;font-style:normal;line-height:1;"></span></i> 全部讨论</a>
+                 
+                <a href="https://www.liaoxuefeng.com/discuss/001409195742008d822b26cf3de46aea14f2b7378a1ba91000/001540455229645e69e29e7555146b79e874b5699b647aa000#reply" style="text-transform:none;background:rgb(245, 245, 245);text-decoration:none;border-radius:4px;-webkit-appearance:none;margin:0px;overflow:visible;font-style:inherit;font-variant:inherit;font-weight:inherit;font-stretch:inherit;font-family:inherit;color:rgb(68, 68, 68);display:inline-block;box-sizing:border-box;padding:0px 10px;vertical-align:middle;line-height:23px;min-height:25px;font-size:12px;text-align:center;border:1px solid rgba(0, 0, 0, 0.06);text-shadow:rgb(255, 255, 255) 0px 1px 0px;cursor:pointer;" target="_blank"><i style="font-family:FontAwesome;display:inline-block;font-weight:normal;font-style:normal;line-height:1;-webkit-font-smoothing:antialiased;text-decoration:none;"><span style="font-family:FontAwesome;font-weight:normal;font-style:normal;line-height:1;"></span></i> 回复</a>
+            </div>
+        </li>
+    </ul></li><li style="margin-top:25px;">
+        <div>
+            <div style="margin-bottom:0;background:transparent;padding:10px;border-right:none;border-bottom:none;border-left:none;border-image:initial;border-top:1px solid rgb(221, 221, 221);border-radius:0px;"><span style="display:table;"></span>
+                <a href="https://www.liaoxuefeng.com/user/00154037267463321cc83d501d447e69be02df261934e78000" style="background:transparent;color:rgb(5, 147, 211);text-decoration:none;cursor:pointer;" target="_blank"><img src="操作文件和目录_files/default_avatar_male_50.gif" type="image/gif" data-filename="default_avatar_male_50.gif" alt="" height="50" style="vertical-align:middle;max-width:100%;height:auto;box-sizing:border-box;border:1px solid rgb(221, 221, 221);margin-right:15px;float:left;border-radius:50%;" width="50"/></a>
+                <h4 style="font-family:&quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif;font-weight:normal;color:rgb(68, 68, 68);text-transform:none;margin:5px 0px 0px;font-size:16px;line-height:22px;"><a href="https://www.liaoxuefeng.com/discuss/001409195742008d822b26cf3de46aea14f2b7378a1ba91000/001540444760989bfefd95298ec4db3a76198e8652fb02b000" style="background:transparent;color:rgb(5, 147, 211);text-decoration:none;cursor:pointer;" target="_blank">递归</a></h4>
+                <div style="margin:2px 0px 0px;font-size:11px;line-height:16px;color:rgb(153, 153, 153);"><a href="https://www.liaoxuefeng.com/user/00154037267463321cc83d501d447e69be02df261934e78000" style="background:transparent;color:rgb(5, 147, 211);text-decoration:none;cursor:pointer;" target="_blank">小小晓月寒丶53854</a> created at 4天前, Last updated at 4天前</div>
+            <span style="display:table;clear:both;"></span></div>
+            <div style="padding-right:10px;padding-left:75px;word-break:break-all;">
+                <p style="margin:0px 0px 15px;overflow-wrap:break-word;white-space:pre-wrap;">import os</p>
+<p style="margin:0px 0px 15px;margin-top:15px;overflow-wrap:break-word;white-space:pre-wrap;">def findfile(path,str):
+    for x in os.listdir(path):
+        if os.path.isdir(x):
+            findfile(x, str)
+        elif x.find(str) != -1:
+            print(os.path.join(path,x))</p>
+<p style="margin:0px 0px 15px;margin-top:15px;overflow-wrap:break-word;white-space:pre-wrap;margin-bottom:0px;">findfile('D:\code\hys\cms\target','cms')</p>
+
+            </div>
+        </div>
+    <ul style="padding-left:30px;margin:25px 0px 0px;list-style:none;">
+        <li>
+            <div>
+                <hr style="border-left-style:initial;box-sizing:content-box;margin:15px 0px;border-width:1px 0px 0px;border-right-style:initial;border-bottom-style:initial;height:0px;border-right-color:initial;border-bottom-color:initial;border-left-color:initial;border-image:initial;border-top-style:solid;border-top-color:rgb(221, 221, 221);"/>
+                <a href="https://www.liaoxuefeng.com/discuss/001409195742008d822b26cf3de46aea14f2b7378a1ba91000/001540444760989bfefd95298ec4db3a76198e8652fb02b000" style="text-transform:none;background:rgb(245, 245, 245);text-decoration:none;border-radius:4px;-webkit-appearance:none;margin:0px;overflow:visible;font-style:inherit;font-variant:inherit;font-weight:inherit;font-stretch:inherit;font-family:inherit;color:rgb(68, 68, 68);display:inline-block;box-sizing:border-box;padding:0px 10px;vertical-align:middle;line-height:23px;min-height:25px;font-size:12px;text-align:center;border:1px solid rgba(0, 0, 0, 0.06);text-shadow:rgb(255, 255, 255) 0px 1px 0px;cursor:pointer;" target="_blank"><i style="font-family:FontAwesome;display:inline-block;font-weight:normal;font-style:normal;line-height:1;-webkit-font-smoothing:antialiased;text-decoration:none;"><span style="font-family:FontAwesome;font-weight:normal;font-style:normal;line-height:1;"></span></i> 全部讨论</a>
+                 
+                <a href="https://www.liaoxuefeng.com/discuss/001409195742008d822b26cf3de46aea14f2b7378a1ba91000/001540444760989bfefd95298ec4db3a76198e8652fb02b000#reply" style="text-transform:none;background:rgb(245, 245, 245);text-decoration:none;border-radius:4px;-webkit-appearance:none;margin:0px;overflow:visible;font-style:inherit;font-variant:inherit;font-weight:inherit;font-stretch:inherit;font-family:inherit;color:rgb(68, 68, 68);display:inline-block;box-sizing:border-box;padding:0px 10px;vertical-align:middle;line-height:23px;min-height:25px;font-size:12px;text-align:center;border:1px solid rgba(0, 0, 0, 0.06);text-shadow:rgb(255, 255, 255) 0px 1px 0px;cursor:pointer;" target="_blank"><i style="font-family:FontAwesome;display:inline-block;font-weight:normal;font-style:normal;line-height:1;-webkit-font-smoothing:antialiased;text-decoration:none;"><span style="font-family:FontAwesome;font-weight:normal;font-style:normal;line-height:1;"></span></i> 回复</a>
+            </div>
+        </li>
+    </ul></li><li style="margin-top:25px;">
+        <div>
+            <div style="margin-bottom:0;background:transparent;padding:10px;border-right:none;border-bottom:none;border-left:none;border-image:initial;border-top:1px solid rgb(221, 221, 221);border-radius:0px;"><span style="display:table;"></span>
+                <a href="https://www.liaoxuefeng.com/user/001470738900313200fe2937aa84cd392c2f7d6eb4c7c2f000" style="background:transparent;color:rgb(5, 147, 211);text-decoration:none;cursor:pointer;" target="_blank"><img src="操作文件和目录_files/c3f4fbadjw8euwolu955fj21hc0u012s.jpg" type="image/jpeg" data-filename="c3f4fbadjw8euwolu955fj21hc0u012s.jpg" alt="" height="50" style="vertical-align:middle;max-width:100%;height:auto;box-sizing:border-box;border:1px solid rgb(221, 221, 221);margin-right:15px;float:left;border-radius:50%;" width="50"/></a>
+                <h4 style="font-family:&quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif;font-weight:normal;color:rgb(68, 68, 68);text-transform:none;margin:5px 0px 0px;font-size:16px;line-height:22px;"><a href="https://www.liaoxuefeng.com/discuss/001409195742008d822b26cf3de46aea14f2b7378a1ba91000/001539069505612d71f111fa22d482d8133a921be52bd5a000" style="background:transparent;color:rgb(5, 147, 211);text-decoration:none;cursor:pointer;" target="_blank">作业题2： 打印特定目录及其子目录下，所有包含特定名称的文件及其全名称</a></h4>
+                <div style="margin:2px 0px 0px;font-size:11px;line-height:16px;color:rgb(153, 153, 153);"><a href="https://www.liaoxuefeng.com/user/001470738900313200fe2937aa84cd392c2f7d6eb4c7c2f000" style="background:transparent;color:rgb(5, 147, 211);text-decoration:none;cursor:pointer;" target="_blank">百草不再遍尝</a> created at 10-9 15:18, Last updated at 10-9 15:18</div>
+            <span style="display:table;clear:both;"></span></div>
+            <div style="padding-right:10px;padding-left:75px;word-break:break-all;">
+                <p style="margin:0px 0px 15px;overflow-wrap:break-word;white-space:pre-wrap;margin-bottom:0px;">def findfile(filePath, keyvalue):
+    fs = os.listdir(filePath) 
+    for f in fs:
+        fullpath = os.path.join(filePath, f)
+        if os.path.isfile(fullpath):
+            if re.search(keyvalue, f):
+                print(fullpath)
+        elif os.path.isdir(fullpath):
+            findfile(fullpath, keyvalue)</p>
+
+            </div>
+        </div>
+    <ul style="padding-left:30px;margin:25px 0px 0px;list-style:none;"><li>
+        <div>
+            <div style="margin-bottom:0;background:transparent;padding:10px;border-right:none;border-bottom:none;border-left:none;border-image:initial;border-top:1px solid rgb(221, 221, 221);border-radius:0px;"><span style="display:table;"></span>
+                <a href="https://www.liaoxuefeng.com/user/001470738900313200fe2937aa84cd392c2f7d6eb4c7c2f000" style="background:transparent;color:rgb(5, 147, 211);text-decoration:none;cursor:pointer;" target="_blank"><img src="操作文件和目录_files/c3f4fbadjw8euwolu955fj21hc0u012s [1].jpg" type="image/jpeg" data-filename="c3f4fbadjw8euwolu955fj21hc0u012s.jpg" alt="" height="50" style="vertical-align:middle;max-width:100%;height:auto;box-sizing:border-box;border:1px solid rgb(221, 221, 221);margin-right:15px;float:left;border-radius:50%;" width="50"/></a>
+                <div style="margin:2px 0px 0px;font-size:11px;line-height:16px;color:rgb(153, 153, 153);"><a href="https://www.liaoxuefeng.com/user/001470738900313200fe2937aa84cd392c2f7d6eb4c7c2f000" style="background:transparent;color:rgb(5, 147, 211);text-decoration:none;cursor:pointer;" target="_blank">百草不再遍尝</a></div>
+                <div style="margin:2px 0px 0px;font-size:11px;line-height:16px;color:rgb(153, 153, 153);">Created at 10-9 15:18, Last updated at 10-9 15:18</div>
+            <span style="display:table;clear:both;"></span></div>
+            <div style="padding-right:10px;padding-left:75px;word-break:break-all;">
+                <p style="margin:0px 0px 15px;overflow-wrap:break-word;white-space:pre-wrap;margin-bottom:0px;">需要import os;import re</p>
+
+            </div>
+        </div>
+    </li>
+        <li style="margin-top:25px;">
+            <div>
+                <hr style="border-left-style:initial;box-sizing:content-box;margin:15px 0px;border-width:1px 0px 0px;border-right-style:initial;border-bottom-style:initial;height:0px;border-right-color:initial;border-bottom-color:initial;border-left-color:initial;border-image:initial;border-top-style:solid;border-top-color:rgb(221, 221, 221);"/>
+                <a href="https://www.liaoxuefeng.com/discuss/001409195742008d822b26cf3de46aea14f2b7378a1ba91000/001539069505612d71f111fa22d482d8133a921be52bd5a000" style="text-transform:none;background:rgb(245, 245, 245);text-decoration:none;border-radius:4px;-webkit-appearance:none;margin:0px;overflow:visible;font-style:inherit;font-variant:inherit;font-weight:inherit;font-stretch:inherit;font-family:inherit;color:rgb(68, 68, 68);display:inline-block;box-sizing:border-box;padding:0px 10px;vertical-align:middle;line-height:23px;min-height:25px;font-size:12px;text-align:center;border:1px solid rgba(0, 0, 0, 0.06);text-shadow:rgb(255, 255, 255) 0px 1px 0px;cursor:pointer;" target="_blank"><i style="font-family:FontAwesome;display:inline-block;font-weight:normal;font-style:normal;line-height:1;-webkit-font-smoothing:antialiased;text-decoration:none;"><span style="font-family:FontAwesome;font-weight:normal;font-style:normal;line-height:1;"></span></i> 全部讨论</a>
+                 
+                <a href="https://www.liaoxuefeng.com/discuss/001409195742008d822b26cf3de46aea14f2b7378a1ba91000/001539069505612d71f111fa22d482d8133a921be52bd5a000#reply" style="text-transform:none;background:rgb(245, 245, 245);text-decoration:none;border-radius:4px;-webkit-appearance:none;margin:0px;overflow:visible;font-style:inherit;font-variant:inherit;font-weight:inherit;font-stretch:inherit;font-family:inherit;color:rgb(68, 68, 68);display:inline-block;box-sizing:border-box;padding:0px 10px;vertical-align:middle;line-height:23px;min-height:25px;font-size:12px;text-align:center;border:1px solid rgba(0, 0, 0, 0.06);text-shadow:rgb(255, 255, 255) 0px 1px 0px;cursor:pointer;" target="_blank"><i style="font-family:FontAwesome;display:inline-block;font-weight:normal;font-style:normal;line-height:1;-webkit-font-smoothing:antialiased;text-decoration:none;"><span style="font-family:FontAwesome;font-weight:normal;font-style:normal;line-height:1;"></span></i> 回复</a>
+            </div>
+        </li>
+    </ul></li><li style="margin-top:25px;">
+        <div>
+            <div style="margin-bottom:0;background:transparent;padding:10px;border-right:none;border-bottom:none;border-left:none;border-image:initial;border-top:1px solid rgb(221, 221, 221);border-radius:0px;"><span style="display:table;"></span>
+                <a href="https://www.liaoxuefeng.com/user/0015238471071286be4262d286b4282a31bf206e32decb7000" style="background:transparent;color:rgb(5, 147, 211);text-decoration:none;cursor:pointer;" target="_blank"><img src="操作文件和目录_files/default_avatar_male_50 [1].gif" type="image/gif" data-filename="default_avatar_male_50.gif" alt="" height="50" style="vertical-align:middle;max-width:100%;height:auto;box-sizing:border-box;border:1px solid rgb(221, 221, 221);margin-right:15px;float:left;border-radius:50%;" width="50"/></a>
+                <h4 style="font-family:&quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif;font-weight:normal;color:rgb(68, 68, 68);text-transform:none;margin:5px 0px 0px;font-size:16px;line-height:22px;"><a href="https://www.liaoxuefeng.com/discuss/001409195742008d822b26cf3de46aea14f2b7378a1ba91000/0015384496008522fb57f3977df46768edc90cbbdcd5306000" style="background:transparent;color:rgb(5, 147, 211);text-decoration:none;cursor:pointer;" target="_blank">非递归实现</a></h4>
+                <div style="margin:2px 0px 0px;font-size:11px;line-height:16px;color:rgb(153, 153, 153);"><a href="https://www.liaoxuefeng.com/user/0015238471071286be4262d286b4282a31bf206e32decb7000" style="background:transparent;color:rgb(5, 147, 211);text-decoration:none;cursor:pointer;" target="_blank">暴恒磊</a> created at 10-2 11:06, Last updated at 10-2 11:46</div>
+            <span style="display:table;clear:both;"></span></div>
+            <div style="padding-right:10px;padding-left:75px;word-break:break-all;">
+                <p style="margin:0px 0px 15px;overflow-wrap:break-word;white-space:pre-wrap;">import os</p>
+<p style="margin:0px 0px 15px;margin-top:15px;overflow-wrap:break-word;white-space:pre-wrap;margin-bottom:0px;">def findfile(key, path = os.curdir):
+    dirlist=[path]
+    while len(dirlist):
+        for x in os.listdir(dirlist[0]):
+            xPath = os.path.join(dirlist[0],x)
+            if os.path.isdir(xPath):
+                dirlist.append(xPath)
+            elif x.find(key) != -1:
+                print('Found file at',xPath)
+        dirlist.pop(0)
+findfile('x')</p>
+
+            </div>
+        </div>
+    <ul style="padding-left:30px;margin:25px 0px 0px;list-style:none;"><li>
+        <div>
+            <div style="margin-bottom:0;background:transparent;padding:10px;border-right:none;border-bottom:none;border-left:none;border-image:initial;border-top:1px solid rgb(221, 221, 221);border-radius:0px;"><span style="display:table;"></span>
+                <a href="https://www.liaoxuefeng.com/user/0015238471071286be4262d286b4282a31bf206e32decb7000" style="background:transparent;color:rgb(5, 147, 211);text-decoration:none;cursor:pointer;" target="_blank"><img src="操作文件和目录_files/default_avatar_male_50 [2].gif" type="image/gif" data-filename="default_avatar_male_50.gif" alt="" height="50" style="vertical-align:middle;max-width:100%;height:auto;box-sizing:border-box;border:1px solid rgb(221, 221, 221);margin-right:15px;float:left;border-radius:50%;" width="50"/></a>
+                <div style="margin:2px 0px 0px;font-size:11px;line-height:16px;color:rgb(153, 153, 153);"><a href="https://www.liaoxuefeng.com/user/0015238471071286be4262d286b4282a31bf206e32decb7000" style="background:transparent;color:rgb(5, 147, 211);text-decoration:none;cursor:pointer;" target="_blank">暴恒磊</a></div>
+                <div style="margin:2px 0px 0px;font-size:11px;line-height:16px;color:rgb(153, 153, 153);">Created at 10-2 11:46, Last updated at 10-2 11:46</div>
+            <span style="display:table;clear:both;"></span></div>
+            <div style="padding-right:10px;padding-left:75px;word-break:break-all;">
+                <p style="margin:0px 0px 15px;overflow-wrap:break-word;white-space:pre-wrap;margin-bottom:0px;">如果调用时要传入第二个参数，请使用
+r'C:\Users\baohe\Documents\我的坚果云'
+的形式。
+'C:\Users\baohe\Documents\我的坚果云'是不对的，应该双写\,即\。因为\是转义符。</p>
+
+            </div>
+        </div>
+    </li>
+        <li style="margin-top:25px;">
+            <div>
+                <hr style="border-left-style:initial;box-sizing:content-box;margin:15px 0px;border-width:1px 0px 0px;border-right-style:initial;border-bottom-style:initial;height:0px;border-right-color:initial;border-bottom-color:initial;border-left-color:initial;border-image:initial;border-top-style:solid;border-top-color:rgb(221, 221, 221);"/>
+                <a href="https://www.liaoxuefeng.com/discuss/001409195742008d822b26cf3de46aea14f2b7378a1ba91000/0015384496008522fb57f3977df46768edc90cbbdcd5306000" style="text-transform:none;background:rgb(245, 245, 245);text-decoration:none;border-radius:4px;-webkit-appearance:none;margin:0px;overflow:visible;font-style:inherit;font-variant:inherit;font-weight:inherit;font-stretch:inherit;font-family:inherit;color:rgb(68, 68, 68);display:inline-block;box-sizing:border-box;padding:0px 10px;vertical-align:middle;line-height:23px;min-height:25px;font-size:12px;text-align:center;border:1px solid rgba(0, 0, 0, 0.06);text-shadow:rgb(255, 255, 255) 0px 1px 0px;cursor:pointer;" target="_blank"><i style="font-family:FontAwesome;display:inline-block;font-weight:normal;font-style:normal;line-height:1;-webkit-font-smoothing:antialiased;text-decoration:none;"><span style="font-family:FontAwesome;font-weight:normal;font-style:normal;line-height:1;"></span></i> 全部讨论</a>
+                 
+                <a href="https://www.liaoxuefeng.com/discuss/001409195742008d822b26cf3de46aea14f2b7378a1ba91000/0015384496008522fb57f3977df46768edc90cbbdcd5306000#reply" style="text-transform:none;background:rgb(245, 245, 245);text-decoration:none;border-radius:4px;-webkit-appearance:none;margin:0px;overflow:visible;font-style:inherit;font-variant:inherit;font-weight:inherit;font-stretch:inherit;font-family:inherit;color:rgb(68, 68, 68);display:inline-block;box-sizing:border-box;padding:0px 10px;vertical-align:middle;line-height:23px;min-height:25px;font-size:12px;text-align:center;border:1px solid rgba(0, 0, 0, 0.06);text-shadow:rgb(255, 255, 255) 0px 1px 0px;cursor:pointer;" target="_blank"><i style="font-family:FontAwesome;display:inline-block;font-weight:normal;font-style:normal;line-height:1;-webkit-font-smoothing:antialiased;text-decoration:none;"><span style="font-family:FontAwesome;font-weight:normal;font-style:normal;line-height:1;"></span></i> 回复</a>
+            </div>
+        </li>
+    </ul></li><li style="margin-top:25px;">
+        <div>
+            <div style="margin-bottom:0;background:transparent;padding:10px;border-right:none;border-bottom:none;border-left:none;border-image:initial;border-top:1px solid rgb(221, 221, 221);border-radius:0px;"><span style="display:table;"></span>
+                <a href="https://www.liaoxuefeng.com/user/0014784871738580a19e25a75164c379d1413ab909c9926000" style="background:transparent;color:rgb(5, 147, 211);text-decoration:none;cursor:pointer;" target="_blank"><img src="操作文件和目录_files/0067xwsGjw8es524gmw26j30dc0dc0vf.jpg" type="image/jpeg" data-filename="0067xwsGjw8es524gmw26j30dc0dc0vf.jpg" alt="" height="50" style="vertical-align:middle;max-width:100%;height:auto;box-sizing:border-box;border:1px solid rgb(221, 221, 221);margin-right:15px;float:left;border-radius:50%;" width="50"/></a>
+                <h4 style="font-family:&quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif;font-weight:normal;color:rgb(68, 68, 68);text-transform:none;margin:5px 0px 0px;font-size:16px;line-height:22px;"><a href="https://www.liaoxuefeng.com/discuss/001409195742008d822b26cf3de46aea14f2b7378a1ba91000/0015383915974675316d60e314f4911b8786425e272e538000" style="background:transparent;color:rgb(5, 147, 211);text-decoration:none;cursor:pointer;" target="_blank">第二题，我使用递归，因为递归的代码简洁，不过注意如果目录太深，容易造成内存溢出！</a></h4>
+                <div style="margin:2px 0px 0px;font-size:11px;line-height:16px;color:rgb(153, 153, 153);"><a href="https://www.liaoxuefeng.com/user/0014784871738580a19e25a75164c379d1413ab909c9926000" style="background:transparent;color:rgb(5, 147, 211);text-decoration:none;cursor:pointer;" target="_blank">biggerdream</a> created at 10-1 18:59, Last updated at 10-1 18:59</div>
+            <span style="display:table;clear:both;"></span></div>
+            <div style="padding-right:10px;padding-left:75px;word-break:break-all;">
+                <p style="margin:0px 0px 15px;overflow-wrap:break-word;white-space:pre-wrap;">#导入os模块
+import os</p>
+<p style="margin:0px 0px 15px;margin-top:15px;overflow-wrap:break-word;white-space:pre-wrap;">#定义查找指定文件名的函数：第一参数是要查找的指定文件名，第二个参数是查找的路径，默认参数是当前目录</p>
+<p style="margin:0px 0px 15px;margin-top:15px;overflow-wrap:break-word;white-space:pre-wrap;">def search(filename, path = os.curdir):</p>
+<pre style="overflow:auto;margin:0px 0px 15px;background:rgb(250, 250, 250);font:12px/18px Consolas, monospace, serif;color:rgb(68, 68, 68);tab-size:4;padding:10px;border:1px solid rgb(221, 221, 221);border-radius:3px;margin-top:15px;word-break:break-all;overflow-wrap:break-word;white-space:pre-wrap;"><code>#遍历当前目录里面的所有文件和文件夹
+for x in os.listdir(path):
+    #获取每个文件和文件夹的路径
+    xPath = os.path.join(path, x)
+    #判断是文件还是文件夹（目录）
+    if os.path.isdir(xPath):
+        #如果是文件夹（目录），则继续查找（这里使用了递归！不过递归有个缺点，如果目录深度太大，容易造成内存溢出）
+        search(filename, xPath)
+    elif x.find(filename) != -1:
+        #如果是文件，并且包含指定文件名，则打印其文件相对路径
+        print('found: %s' % os.path.relpath(xPath))
+</code></pre><p style="margin:0px 0px 15px;margin-top:15px;overflow-wrap:break-word;white-space:pre-wrap;margin-bottom:0px;">#使用函数
+search('hello')</p>
+
+            </div>
+        </div>
+    <ul style="padding-left:30px;margin:25px 0px 0px;list-style:none;">
+        <li>
+            <div>
+                <hr style="border-left-style:initial;box-sizing:content-box;margin:15px 0px;border-width:1px 0px 0px;border-right-style:initial;border-bottom-style:initial;height:0px;border-right-color:initial;border-bottom-color:initial;border-left-color:initial;border-image:initial;border-top-style:solid;border-top-color:rgb(221, 221, 221);"/>
+                <a href="https://www.liaoxuefeng.com/discuss/001409195742008d822b26cf3de46aea14f2b7378a1ba91000/0015383915974675316d60e314f4911b8786425e272e538000" style="text-transform:none;background:rgb(245, 245, 245);text-decoration:none;border-radius:4px;-webkit-appearance:none;margin:0px;overflow:visible;font-style:inherit;font-variant:inherit;font-weight:inherit;font-stretch:inherit;font-family:inherit;color:rgb(68, 68, 68);display:inline-block;box-sizing:border-box;padding:0px 10px;vertical-align:middle;line-height:23px;min-height:25px;font-size:12px;text-align:center;border:1px solid rgba(0, 0, 0, 0.06);text-shadow:rgb(255, 255, 255) 0px 1px 0px;cursor:pointer;" target="_blank"><i style="font-family:FontAwesome;display:inline-block;font-weight:normal;font-style:normal;line-height:1;-webkit-font-smoothing:antialiased;text-decoration:none;"><span style="font-family:FontAwesome;font-weight:normal;font-style:normal;line-height:1;"></span></i> 全部讨论</a>
+                 
+                <a href="https://www.liaoxuefeng.com/discuss/001409195742008d822b26cf3de46aea14f2b7378a1ba91000/0015383915974675316d60e314f4911b8786425e272e538000#reply" style="text-transform:none;background:rgb(245, 245, 245);text-decoration:none;border-radius:4px;-webkit-appearance:none;margin:0px;overflow:visible;font-style:inherit;font-variant:inherit;font-weight:inherit;font-stretch:inherit;font-family:inherit;color:rgb(68, 68, 68);display:inline-block;box-sizing:border-box;padding:0px 10px;vertical-align:middle;line-height:23px;min-height:25px;font-size:12px;text-align:center;border:1px solid rgba(0, 0, 0, 0.06);text-shadow:rgb(255, 255, 255) 0px 1px 0px;cursor:pointer;" target="_blank"><i style="font-family:FontAwesome;display:inline-block;font-weight:normal;font-style:normal;line-height:1;-webkit-font-smoothing:antialiased;text-decoration:none;"><span style="font-family:FontAwesome;font-weight:normal;font-style:normal;line-height:1;"></span></i> 回复</a>
+            </div>
+        </li>
+    </ul></li><li style="margin-top:25px;">
+        <div>
+            <div style="margin-bottom:0;background:transparent;padding:10px;border-right:none;border-bottom:none;border-left:none;border-image:initial;border-top:1px solid rgb(221, 221, 221);border-radius:0px;"><span style="display:table;"></span>
+                <a href="https://www.liaoxuefeng.com/user/0015325944511205357cfae428547fe82dc2864a790cb8f000" style="background:transparent;color:rgb(5, 147, 211);text-decoration:none;cursor:pointer;" target="_blank"><img src="操作文件和目录_files/e713946aly8fe0292s40yj20hs0ho0te.jpg" type="image/jpeg" data-filename="e713946aly8fe0292s40yj20hs0ho0te.jpg" alt="" height="50" style="vertical-align:middle;max-width:100%;height:auto;box-sizing:border-box;border:1px solid rgb(221, 221, 221);margin-right:15px;float:left;border-radius:50%;" width="50"/></a>
+                <h4 style="font-family:&quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif;font-weight:normal;color:rgb(68, 68, 68);text-transform:none;margin:5px 0px 0px;font-size:16px;line-height:22px;"><a href="https://www.liaoxuefeng.com/discuss/001409195742008d822b26cf3de46aea14f2b7378a1ba91000/001538118840545ca7c5b21b67e468c9cd9c2742e18f736000" style="background:transparent;color:rgb(5, 147, 211);text-decoration:none;cursor:pointer;" target="_blank">应该还有更好的方法</a></h4>
+                <div style="margin:2px 0px 0px;font-size:11px;line-height:16px;color:rgb(153, 153, 153);"><a href="https://www.liaoxuefeng.com/user/0015325944511205357cfae428547fe82dc2864a790cb8f000" style="background:transparent;color:rgb(5, 147, 211);text-decoration:none;cursor:pointer;" target="_blank">李洋_Bj</a> created at 9-28 15:14, Last updated at 9-28 15:14</div>
+            <span style="display:table;clear:both;"></span></div>
+            <div style="padding-right:10px;padding-left:75px;word-break:break-all;">
+                <p style="margin:0px 0px 15px;overflow-wrap:break-word;white-space:pre-wrap;">#coding: utf-8
+import os
+list = []</p>
+<p style="margin:0px 0px 15px;margin-top:15px;overflow-wrap:break-word;white-space:pre-wrap;margin-bottom:0px;">def find_file(path,key):
+    find_path = os.listdir(path)
+    for now_path in find_path:
+        file_path = os.path.join(path,now_path)
+        if os.path.isfile(file_path):
+            if now_path.find(key) != -1:
+                list.append(file_path)
+        else:
+            find_file(file_path,key)
+    return (list)
+if <strong style="font-weight:bold;">name</strong> == '<strong style="font-weight:bold;">main</strong>':
+    test = find_file('E:\hollyphone','txt')
+    for i in test:
+        print (i)</p>
+
+            </div>
+        </div>
+    <ul style="padding-left:30px;margin:25px 0px 0px;list-style:none;">
+        <li>
+            <div>
+                <hr style="border-left-style:initial;box-sizing:content-box;margin:15px 0px;border-width:1px 0px 0px;border-right-style:initial;border-bottom-style:initial;height:0px;border-right-color:initial;border-bottom-color:initial;border-left-color:initial;border-image:initial;border-top-style:solid;border-top-color:rgb(221, 221, 221);"/>
+                <a href="https://www.liaoxuefeng.com/discuss/001409195742008d822b26cf3de46aea14f2b7378a1ba91000/001538118840545ca7c5b21b67e468c9cd9c2742e18f736000" style="text-transform:none;background:rgb(245, 245, 245);text-decoration:none;border-radius:4px;-webkit-appearance:none;margin:0px;overflow:visible;font-style:inherit;font-variant:inherit;font-weight:inherit;font-stretch:inherit;font-family:inherit;color:rgb(68, 68, 68);display:inline-block;box-sizing:border-box;padding:0px 10px;vertical-align:middle;line-height:23px;min-height:25px;font-size:12px;text-align:center;border:1px solid rgba(0, 0, 0, 0.06);text-shadow:rgb(255, 255, 255) 0px 1px 0px;cursor:pointer;" target="_blank"><i style="font-family:FontAwesome;display:inline-block;font-weight:normal;font-style:normal;line-height:1;-webkit-font-smoothing:antialiased;text-decoration:none;"><span style="font-family:FontAwesome;font-weight:normal;font-style:normal;line-height:1;"></span></i> 全部讨论</a>
+                 
+                <a href="https://www.liaoxuefeng.com/discuss/001409195742008d822b26cf3de46aea14f2b7378a1ba91000/001538118840545ca7c5b21b67e468c9cd9c2742e18f736000#reply" style="text-transform:none;background:rgb(245, 245, 245);text-decoration:none;border-radius:4px;-webkit-appearance:none;margin:0px;overflow:visible;font-style:inherit;font-variant:inherit;font-weight:inherit;font-stretch:inherit;font-family:inherit;color:rgb(68, 68, 68);display:inline-block;box-sizing:border-box;padding:0px 10px;vertical-align:middle;line-height:23px;min-height:25px;font-size:12px;text-align:center;border:1px solid rgba(0, 0, 0, 0.06);text-shadow:rgb(255, 255, 255) 0px 1px 0px;cursor:pointer;" target="_blank"><i style="font-family:FontAwesome;display:inline-block;font-weight:normal;font-style:normal;line-height:1;-webkit-font-smoothing:antialiased;text-decoration:none;"><span style="font-family:FontAwesome;font-weight:normal;font-style:normal;line-height:1;"></span></i> 回复</a>
+            </div>
+        </li>
+    </ul></li><li style="margin-top:25px;">
+        <div>
+            <div style="margin-bottom:0;background:transparent;padding:10px;border-right:none;border-bottom:none;border-left:none;border-image:initial;border-top:1px solid rgb(221, 221, 221);border-radius:0px;"><span style="display:table;"></span>
+                <a href="https://www.liaoxuefeng.com/user/001537530247809f090fc687c114ffc9c32d37e3cfac67f000" style="background:transparent;color:rgb(5, 147, 211);text-decoration:none;cursor:pointer;" target="_blank"><img src="操作文件和目录_files/a86c0713jw8f4efn27zgdj20ku0ksta0.jpg" type="image/jpeg" data-filename="a86c0713jw8f4efn27zgdj20ku0ksta0.jpg" alt="" height="50" style="vertical-align:middle;max-width:100%;height:auto;box-sizing:border-box;border:1px solid rgb(221, 221, 221);margin-right:15px;float:left;border-radius:50%;" width="50"/></a>
+                <h4 style="font-family:&quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif;font-weight:normal;color:rgb(68, 68, 68);text-transform:none;margin:5px 0px 0px;font-size:16px;line-height:22px;"><a href="https://www.liaoxuefeng.com/discuss/001409195742008d822b26cf3de46aea14f2b7378a1ba91000/0015375296996836aff1d5c77b54465bf20adf45a0fc971000" style="background:transparent;color:rgb(5, 147, 211);text-decoration:none;cursor:pointer;" target="_blank">第二题</a></h4>
+                <div style="margin:2px 0px 0px;font-size:11px;line-height:16px;color:rgb(153, 153, 153);"><a href="https://www.liaoxuefeng.com/user/001537530247809f090fc687c114ffc9c32d37e3cfac67f000" style="background:transparent;color:rgb(5, 147, 211);text-decoration:none;cursor:pointer;" target="_blank">小hi蚂蚁</a> created at 9-21 19:34, Last updated at 9-21 19:34</div>
+            <span style="display:table;clear:both;"></span></div>
+            <div style="padding-right:10px;padding-left:75px;word-break:break-all;">
+                <p style="margin:0px 0px 15px;overflow-wrap:break-word;white-space:pre-wrap;">import os</p>
+<p style="margin:0px 0px 15px;margin-top:15px;overflow-wrap:break-word;white-space:pre-wrap;">def scanfile(paths, files, lists= None):
+    lists = []
+    try:
+        for i in os.listdir(paths):
+            x = os.path.join(paths, i)
+            if os.path.isfile(x) and (files in os.path.split(i)[1]):
+                print(os.path.join(x.split('\')[-2], os.path.split(x)[1]))
+                lists.append(os.path.join(x.split('\')[-2], os.path.split(x)[1]))
+            elif os.path.isdir(x):
+                lists.extend(scanfile(x, files))
+    except PermissionError as e:
+        return lists
+    return lists</p>
+<p style="margin:0px 0px 15px;margin-top:15px;overflow-wrap:break-word;white-space:pre-wrap;margin-bottom:0px;">if <strong style="font-weight:bold;">name</strong> == '<strong style="font-weight:bold;">main</strong>':
+    paths = 'h:\'
+    paths = os.path.join(paths)
+    files = 'IPZ'
+    lists = scanfile(paths, files)
+    print(lists)</p>
+
+            </div>
+        </div>
+    <ul style="padding-left:30px;margin:25px 0px 0px;list-style:none;">
+        <li>
+            <div>
+                <hr style="border-left-style:initial;box-sizing:content-box;margin:15px 0px;border-width:1px 0px 0px;border-right-style:initial;border-bottom-style:initial;height:0px;border-right-color:initial;border-bottom-color:initial;border-left-color:initial;border-image:initial;border-top-style:solid;border-top-color:rgb(221, 221, 221);"/>
+                <a href="https://www.liaoxuefeng.com/discuss/001409195742008d822b26cf3de46aea14f2b7378a1ba91000/0015375296996836aff1d5c77b54465bf20adf45a0fc971000" style="text-transform:none;background:rgb(245, 245, 245);text-decoration:none;border-radius:4px;-webkit-appearance:none;margin:0px;overflow:visible;font-style:inherit;font-variant:inherit;font-weight:inherit;font-stretch:inherit;font-family:inherit;color:rgb(68, 68, 68);display:inline-block;box-sizing:border-box;padding:0px 10px;vertical-align:middle;line-height:23px;min-height:25px;font-size:12px;text-align:center;border:1px solid rgba(0, 0, 0, 0.06);text-shadow:rgb(255, 255, 255) 0px 1px 0px;cursor:pointer;" target="_blank"><i style="font-family:FontAwesome;display:inline-block;font-weight:normal;font-style:normal;line-height:1;-webkit-font-smoothing:antialiased;text-decoration:none;"><span style="font-family:FontAwesome;font-weight:normal;font-style:normal;line-height:1;"></span></i> 全部讨论</a>
+                 
+                <a href="https://www.liaoxuefeng.com/discuss/001409195742008d822b26cf3de46aea14f2b7378a1ba91000/0015375296996836aff1d5c77b54465bf20adf45a0fc971000#reply" style="text-transform:none;background:rgb(245, 245, 245);text-decoration:none;border-radius:4px;-webkit-appearance:none;margin:0px;overflow:visible;font-style:inherit;font-variant:inherit;font-weight:inherit;font-stretch:inherit;font-family:inherit;color:rgb(68, 68, 68);display:inline-block;box-sizing:border-box;padding:0px 10px;vertical-align:middle;line-height:23px;min-height:25px;font-size:12px;text-align:center;border:1px solid rgba(0, 0, 0, 0.06);text-shadow:rgb(255, 255, 255) 0px 1px 0px;cursor:pointer;" target="_blank"><i style="font-family:FontAwesome;display:inline-block;font-weight:normal;font-style:normal;line-height:1;-webkit-font-smoothing:antialiased;text-decoration:none;"><span style="font-family:FontAwesome;font-weight:normal;font-style:normal;line-height:1;"></span></i> 回复</a>
+            </div>
+        </li>
+    </ul></li><li style="margin-top:25px;">
+        <div>
+            <div style="margin-bottom:0;background:transparent;padding:10px;border-right:none;border-bottom:none;border-left:none;border-image:initial;border-top:1px solid rgb(221, 221, 221);border-radius:0px;"><span style="display:table;"></span>
+                <a href="https://www.liaoxuefeng.com/user/00149084536162593cb11a4ea3443f890c601e829a99074000" style="background:transparent;color:rgb(5, 147, 211);text-decoration:none;cursor:pointer;" target="_blank"><img src="操作文件和目录_files/ba02e332ly8fe07z0r75kj20e80dp0ti.jpg" type="image/jpeg" data-filename="ba02e332ly8fe07z0r75kj20e80dp0ti.jpg" alt="" height="50" style="vertical-align:middle;max-width:100%;height:auto;box-sizing:border-box;border:1px solid rgb(221, 221, 221);margin-right:15px;float:left;border-radius:50%;" width="50"/></a>
+                <h4 style="font-family:&quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif;font-weight:normal;color:rgb(68, 68, 68);text-transform:none;margin:5px 0px 0px;font-size:16px;line-height:22px;"><a href="https://www.liaoxuefeng.com/discuss/001409195742008d822b26cf3de46aea14f2b7378a1ba91000/001537165753838e00a063b574a4474aa3820e72337a29a000" style="background:transparent;color:rgb(5, 147, 211);text-decoration:none;cursor:pointer;" target="_blank">打卡</a></h4>
+                <div style="margin:2px 0px 0px;font-size:11px;line-height:16px;color:rgb(153, 153, 153);"><a href="https://www.liaoxuefeng.com/user/00149084536162593cb11a4ea3443f890c601e829a99074000" style="background:transparent;color:rgb(5, 147, 211);text-decoration:none;cursor:pointer;" target="_blank">果味II0</a> created at 9-17 14:29, Last updated at 9-17 14:29</div>
+            <span style="display:table;clear:both;"></span></div>
+            <div style="padding-right:10px;padding-left:75px;word-break:break-all;">
+                <p style="margin:0px 0px 15px;overflow-wrap:break-word;white-space:pre-wrap;margin-bottom:0px;">def findFile(path,key):
+    cur_path = os.path.abspath(path)
+    list = []
+    for f in os.listdir(cur_path):
+        file_path = os.path.join(path,f)
+        if os.path.isfile(file_path):
+            if file_path.find(key) != -1:
+                list.append(file_path)
+        else:
+            sub = findFile(file_path,key)
+            for l in sub:
+                list.append(l)
+    return list
+if <strong style="font-weight:bold;">name</strong> == '<strong style="font-weight:bold;">main</strong>':
+    dir_list = findFile('C:\Users\Administrator\Desktop','png')
+    for d in dir_list:
+        print(d)</p>
+
+            </div>
+        </div>
+    <ul style="padding-left:30px;margin:25px 0px 0px;list-style:none;">
+        <li>
+            <div>
+                <hr style="border-left-style:initial;box-sizing:content-box;margin:15px 0px;border-width:1px 0px 0px;border-right-style:initial;border-bottom-style:initial;height:0px;border-right-color:initial;border-bottom-color:initial;border-left-color:initial;border-image:initial;border-top-style:solid;border-top-color:rgb(221, 221, 221);"/>
+                <a href="https://www.liaoxuefeng.com/discuss/001409195742008d822b26cf3de46aea14f2b7378a1ba91000/001537165753838e00a063b574a4474aa3820e72337a29a000" style="text-transform:none;background:rgb(245, 245, 245);text-decoration:none;border-radius:4px;-webkit-appearance:none;margin:0px;overflow:visible;font-style:inherit;font-variant:inherit;font-weight:inherit;font-stretch:inherit;font-family:inherit;color:rgb(68, 68, 68);display:inline-block;box-sizing:border-box;padding:0px 10px;vertical-align:middle;line-height:23px;min-height:25px;font-size:12px;text-align:center;border:1px solid rgba(0, 0, 0, 0.06);text-shadow:rgb(255, 255, 255) 0px 1px 0px;cursor:pointer;" target="_blank"><i style="font-family:FontAwesome;display:inline-block;font-weight:normal;font-style:normal;line-height:1;-webkit-font-smoothing:antialiased;text-decoration:none;"><span style="font-family:FontAwesome;font-weight:normal;font-style:normal;line-height:1;"></span></i> 全部讨论</a>
+                 
+                <a href="https://www.liaoxuefeng.com/discuss/001409195742008d822b26cf3de46aea14f2b7378a1ba91000/001537165753838e00a063b574a4474aa3820e72337a29a000#reply" style="text-transform:none;background:rgb(245, 245, 245);text-decoration:none;border-radius:4px;-webkit-appearance:none;margin:0px;overflow:visible;font-style:inherit;font-variant:inherit;font-weight:inherit;font-stretch:inherit;font-family:inherit;color:rgb(68, 68, 68);display:inline-block;box-sizing:border-box;padding:0px 10px;vertical-align:middle;line-height:23px;min-height:25px;font-size:12px;text-align:center;border:1px solid rgba(0, 0, 0, 0.06);text-shadow:rgb(255, 255, 255) 0px 1px 0px;cursor:pointer;" target="_blank"><i style="font-family:FontAwesome;display:inline-block;font-weight:normal;font-style:normal;line-height:1;-webkit-font-smoothing:antialiased;text-decoration:none;"><span style="font-family:FontAwesome;font-weight:normal;font-style:normal;line-height:1;"></span></i> 回复</a>
+            </div>
+        </li>
+    </ul></li><li style="margin-top:25px;">
+        <div>
+            <div style="margin-bottom:0;background:transparent;padding:10px;border-right:none;border-bottom:none;border-left:none;border-image:initial;border-top:1px solid rgb(221, 221, 221);border-radius:0px;"><span style="display:table;"></span>
+                <a href="https://www.liaoxuefeng.com/user/001537002298932a05966130b4c4eb4ae0a03342e416daf000" style="background:transparent;color:rgb(5, 147, 211);text-decoration:none;cursor:pointer;" target="_blank"><img src="操作文件和目录_files/7b46eed7ly8frue0fryqlj20ro0roabz.jpg" type="image/jpeg" data-filename="7b46eed7ly8frue0fryqlj20ro0roabz.jpg" alt="" height="50" style="vertical-align:middle;max-width:100%;height:auto;box-sizing:border-box;border:1px solid rgb(221, 221, 221);margin-right:15px;float:left;border-radius:50%;" width="50"/></a>
+                <h4 style="font-family:&quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif;font-weight:normal;color:rgb(68, 68, 68);text-transform:none;margin:5px 0px 0px;font-size:16px;line-height:22px;"><a href="https://www.liaoxuefeng.com/discuss/001409195742008d822b26cf3de46aea14f2b7378a1ba91000/00153701760888833d53a0e800a443282be481ad032ab2e000" style="background:transparent;color:rgb(5, 147, 211);text-decoration:none;cursor:pointer;" target="_blank">solution</a></h4>
+                <div style="margin:2px 0px 0px;font-size:11px;line-height:16px;color:rgb(153, 153, 153);"><a href="https://www.liaoxuefeng.com/user/001537002298932a05966130b4c4eb4ae0a03342e416daf000" style="background:transparent;color:rgb(5, 147, 211);text-decoration:none;cursor:pointer;" target="_blank">ggkoibasjdbg</a> created at 9-15 21:20, Last updated at 9-15 21:20</div>
+            <span style="display:table;clear:both;"></span></div>
+            <div style="padding-right:10px;padding-left:75px;word-break:break-all;">
+                <p style="margin:0px 0px 15px;overflow-wrap:break-word;white-space:pre-wrap;">def searchfunc(key,path):
+    for f in os.listdir(path):</p>
+<pre style="overflow:auto;margin:0px 0px 15px;background:rgb(250, 250, 250);font:12px/18px Consolas, monospace, serif;color:rgb(68, 68, 68);tab-size:4;padding:10px;border:1px solid rgb(221, 221, 221);border-radius:3px;margin-top:15px;word-break:break-all;overflow-wrap:break-word;white-space:pre-wrap;"><code>    #应当传入完整路径到isfile和isdir函数中进行判断
+    FilePath = os.path.abspath(os.path.join(path, f))
+    if os.path.isfile(FilePath):
+        if key in str(FilePath[:FilePath.find('.')]):
+            print(FilePath)
+    elif os.path.isdir(FilePath):
+        searchfunc(key,FilePath)
+</code></pre><p style="margin:0px 0px 15px;margin-top:15px;overflow-wrap:break-word;white-space:pre-wrap;">def main():
+    index = input('请输入检索名称：')
+    path=os.path.abspath('.')
+    print(searchfunc(index,path))</p>
+<p style="margin:0px 0px 15px;margin-top:15px;overflow-wrap:break-word;white-space:pre-wrap;margin-bottom:0px;">main()</p>
+
+            </div>
+        </div>
+    <ul style="padding-left:30px;margin:25px 0px 0px;list-style:none;">
+        <li>
+            <div>
+                <hr style="border-left-style:initial;box-sizing:content-box;margin:15px 0px;border-width:1px 0px 0px;border-right-style:initial;border-bottom-style:initial;height:0px;border-right-color:initial;border-bottom-color:initial;border-left-color:initial;border-image:initial;border-top-style:solid;border-top-color:rgb(221, 221, 221);"/>
+                <a href="https://www.liaoxuefeng.com/discuss/001409195742008d822b26cf3de46aea14f2b7378a1ba91000/00153701760888833d53a0e800a443282be481ad032ab2e000" style="text-transform:none;background:rgb(245, 245, 245);text-decoration:none;border-radius:4px;-webkit-appearance:none;margin:0px;overflow:visible;font-style:inherit;font-variant:inherit;font-weight:inherit;font-stretch:inherit;font-family:inherit;color:rgb(68, 68, 68);display:inline-block;box-sizing:border-box;padding:0px 10px;vertical-align:middle;line-height:23px;min-height:25px;font-size:12px;text-align:center;border:1px solid rgba(0, 0, 0, 0.06);text-shadow:rgb(255, 255, 255) 0px 1px 0px;cursor:pointer;" target="_blank"><i style="font-family:FontAwesome;display:inline-block;font-weight:normal;font-style:normal;line-height:1;-webkit-font-smoothing:antialiased;text-decoration:none;"><span style="font-family:FontAwesome;font-weight:normal;font-style:normal;line-height:1;"></span></i> 全部讨论</a>
+                 
+                <a href="https://www.liaoxuefeng.com/discuss/001409195742008d822b26cf3de46aea14f2b7378a1ba91000/00153701760888833d53a0e800a443282be481ad032ab2e000#reply" style="text-transform:none;background:rgb(245, 245, 245);text-decoration:none;border-radius:4px;-webkit-appearance:none;margin:0px;overflow:visible;font-style:inherit;font-variant:inherit;font-weight:inherit;font-stretch:inherit;font-family:inherit;color:rgb(68, 68, 68);display:inline-block;box-sizing:border-box;padding:0px 10px;vertical-align:middle;line-height:23px;min-height:25px;font-size:12px;text-align:center;border:1px solid rgba(0, 0, 0, 0.06);text-shadow:rgb(255, 255, 255) 0px 1px 0px;cursor:pointer;" target="_blank"><i style="font-family:FontAwesome;display:inline-block;font-weight:normal;font-style:normal;line-height:1;-webkit-font-smoothing:antialiased;text-decoration:none;"><span style="font-family:FontAwesome;font-weight:normal;font-style:normal;line-height:1;"></span></i> 回复</a>
+            </div>
+        </li>
+    </ul></li></ul>
+
+    <h3 style="margin:0px 0px 15px;font-family:&quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif;font-weight:normal;color:rgb(68, 68, 68);text-transform:none;font-size:18px;line-height:24px;margin-top:25px;">发表评论</h3>
+
+    <div>
+        <p style="margin:0px 0px 15px;overflow-wrap:break-word;white-space:pre-wrap;"></p>
+    </div>
+
+    <div></div>
+
+
+                        <a href="https://www.liaoxuefeng.com/wiki/001374738125095c955c1e6d8bb493182103fac9270762a000" style="background:transparent;color:rgb(5, 147, 211);text-decoration:none;cursor:pointer;display:block;position:absolute;right:10px;top:10px;" target="_blank">2.7旧版教程</a></div></div></div></div></div></div></div></div></div><br/></div></span>
+</div></body></html> 
