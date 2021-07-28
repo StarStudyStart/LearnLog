@@ -279,9 +279,29 @@
 
 - `re.sub(pattern，replacement，string, count=0)`: 
 
-    `replacement`：所有满足
+    `pattern`: 匹配所有满足该`pattern`的字符串
 
-    替换符合正则匹配的字符串, `count`指定替换的次数，默认值为0替换所有
+    `replacement`：指定替换成后的字符串
+
+    - `replacement`指定为字符串，则可以替换所有
+
+    - `replacement`可以指定为一个可调用对象，用以区分不同`pattern`下替换为不同的字符串。该对象仅接受一个`matchobj`作为参数，并且要求必须返回字符串类型
+
+        ```
+        >>> import re
+        >>> def diff_result(match_obj):
+        ...     if match_obj.group(0) == '--':
+        ...         return '2'
+        ...     else:
+        ...         return '1'
+        
+        >>> re.sub(r'-{1,2}', diff_result, 'one:- tow:--')
+        'one:1 tow:2'
+        ```
+
+        
+
+     `count`指定替换的次数，默认值为0替换所有
 
 - `subn()` 方法完成相同的工作，但返回一个包含新字符串值和已执行的替换次数的 2 元组:
 
