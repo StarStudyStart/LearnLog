@@ -78,8 +78,54 @@ git merge experiment # 合并到主分支，这样就像一条直线一样，没
 
 ## `git branch -a`
 
+显示所有分支
 
+## `git reset`和`git checkout` 的区别
 
+### 常用概念介绍
+
+| 树                | 用途                                 |
+| :---------------- | :----------------------------------- |
+| HEAD              | 上一次提交的快照，下一次提交的父结点 |
+| Index             | 预期的下一次提交的快照               |
+| Working Directory | 沙盒                                 |
+
+HEAD（快照/指针）: 指向当前分支最后一次提交的指针
+
+Index（暂存区）: 索引，预期的下一次提交
+
+work directory(工作区)：本地工作目录
+
+1. `git reset`移动HEAD指向的节点，会改变当前分支；而`git checkout <branch>`移动HEAD自身，指向其他分支，不会改变当前分支的提交
+
+    ```
+    # 假设当前分支为dev分支
+    git checkout master # 切换分支
+    git resset master # 移动分支节点到master的提交
+    ```
+
+    ![https://git-scm.com/book/en/v2/images/reset-checkout.png](https://git-scm.com/book/en/v2/images/reset-checkout.png)
+
+下面的速查表列出了命令对树的影响。
+
+ “REF” 表示该命令移动了 HEAD 指向的提交（切换当前分支的快照），而 “HEAD” 则表示只移动了 HEAD 自身（切换分支）。 
+
+|                             | HEAD | Index/暂存区 | Workdir/工作区 | WD Safe? |
+| :-------------------------- | :--- | :----------- | :------------- | :------: |
+| **Commit Level**            |      |              |                |          |
+| `reset --soft [commit]`     | REF  | NO           | NO             |   YES    |
+| `reset [commit]`            | REF  | YES          | NO             |   YES    |
+| `reset --hard [commit]`     | REF  | YES          | YES            |  **NO**  |
+| `checkout <commit>`         | HEAD | YES          | YES            |   YES    |
+| **File Level**              |      |              |                |          |
+| `reset [commit] <paths>`    | NO   | YES          | NO             |   YES    |
+| `checkout [commit] <paths>` | NO   | YES          | YES            |  **NO**  |
+
+`git reset --soft HEAD~`： 移动当前HEAD指向的分支,到上一次的提交；暂存区：不受影响  工作区不受影响
+
+`git resset HEAD~`:  相当于 `git resset --mixed HEAD~`, 移动当前HEAD指向的分支,到上一次的提交, 并且取消暂存区的文件
+
+`git resset --hard HEAD~`:  移动当前HEAD指向的分支,到上一次的提交, 并且强制覆盖暂存区以及当前工作目录中的文件
 
 
 ## Merge Request
