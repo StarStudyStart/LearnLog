@@ -1,5 +1,76 @@
 # Tips
 
+## 创建虚拟环境
+
+为了避免污染系统内置的python环境，会单独创建一个‘虚拟环境’进行隔离
+
+### 模块
+
+- `venv`： python自带标准模块，无需安装
+
+- `virtualenv`： 第三方虚拟环境模块, 需要另行安装
+
+>  目前并未发现`virtualenv`的优点
+
+### 使用
+
+创建虚拟环境
+
+ `python -m venv /path/to/new/virtual/environment` 
+
+使用虚拟环境中的activate/deactivate命令, 可以激活、关闭虚拟环境
+
+````
+source <venv>/bin/activate  
+source <venv>/bin/deactivate 
+````
+
+>  选项`--system-site-packages`, 使得虚拟环境与系统环境共享第三方库模块。
+
+## 设置`pip`第三方镜像源
+
+### pip镜像源
+
+```
+阿里云
+http://mirrors.aliyun.com/pypi/simple/
+
+清华大学
+https://pypi.tuna.tsinghua.edu.cn/simple/
+
+中国科技大学
+https://pypi.mirrors.ustc.edu.cn/simple/
+
+中国科学技术大学
+http://pypi.mirrors.ustc.edu.cn/simple/
+
+豆瓣
+https://pypi.douban.com/simple/
+```
+
+### windows 平台
+
+`系统盘:/用户/pip/`路径下新建`pip.ini`文件， 内容如下：
+
+```
+# 系统盘:/用户/pip/pip.ini
+[global]
+index-url = https://mirrors.aliyun.com/pypi/simple/
+[install]
+trusted-host = mirrors.aliyun.com
+```
+
+### Linux平台
+
+`vim ~/pip/pip.conf` 写入同样的内容即可
+
+```
+[global]
+index-url = https://mirrors.aliyun.com/pypi/simple/
+[install]
+trusted-host = mirrors.aliyun.com
+```
+
 ## 长字符串换行
 
 - 1、相邻的两个或多个 *字符串字面值* （引号标注的字符）会自动合并
