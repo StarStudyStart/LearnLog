@@ -27,7 +27,7 @@
     `BOM`的两种排序方式
 
     - 大端序列(`big endian`): `BOM` 中记作`FEFF`，低位字节在高内存地址
-    - 小段序列(`littel endian`):  `BOM` 中记作`FFFE`，低位字节在低内存地址
+    - 小端序列(`littel endian`):  `BOM` 中记作`FFFE`，低位字节在低内存地址
 
     ```
     >>> '中'.encode('utf-16')
@@ -45,7 +45,18 @@
 
     小端序列下：中的`utf-16`编码 为`FFFE 2D4E`，大端序列则正好将字节顺序翻转：`FFFE 4E2D`
 
-    
+    ## `UTF8`
 
-    超过两个字节的编码方式必须要带`BOM`标记，如：`UTF-16`、`UTF-32`，`UTF-8`由于其特殊的编解码条件，不需要带`BOM`标记，也不建议携带。此外，`python`也提供了带`BOM`标记的`utf-8`编码格式：`utf-8-sig`(微软系基本上所有的软件都是带`BOM`标记，`utf-8-sig`常用于微软系的软件编解码)
+    以`utf8`编码的字符集，根据编码首位含有多少位`1`即可确认，该字符集由几个字节组成。方式如下：
+    
+    ```
+    0xxxxxxx
+    110xxxxx 10xxxxxx
+    1110xxxx 10xxxxxx 10xxxxxx
+    11110xxx 10xxxxxx 10xxxxxx 10xxxxxx
+    111110xx 10xxxxxx 10xxxxxx 10xxxxxx 10xxxxxx
+    1111110x 10xxxxxx 10xxxxxx 10xxxxxx 10xxxxxx 10xxxxxx
+    ```
+    
+    
 

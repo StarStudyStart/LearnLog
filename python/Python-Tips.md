@@ -25,7 +25,13 @@ source <venv>/bin/activate
 source <venv>/bin/deactivate 
 ````
 
->  选项`--system-site-packages`, 使得虚拟环境与系统环境共享第三方库模块。
+>  选项`--system-site-packages`,  使得虚拟环境与系统环境共享第三方库模块
+
+配置`apache`服务器虚拟环境时，使用`--system-site-packages`. 由于和原python环境共享第三方库，导致`apache`报错，在虚拟环境的lib下找不到第三方库
+
+目前的解决方案是：去除`--system-site-packages`选项，在虚拟环境中重新安装第三方库
+
+**猜想**：apache的配置文件应该可以配置类似`PYTHONPATH`的环境变量自动找到原python环境下的`site-packages`
 
 ## 设置`pip`第三方镜像源
 
