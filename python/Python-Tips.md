@@ -1,3 +1,5 @@
+
+
 # Tips
 
 ## 创建虚拟环境
@@ -31,7 +33,7 @@ source <venv>/bin/deactivate
 
 目前的解决方案是：去除`--system-site-packages`选项，在虚拟环境中重新安装第三方库
 
-**猜想**：apache的配置文件应该可以配置类似`PYTHONPATH`的环境变量自动找到原python环境下的`site-packages`
+**推测**：apache的配置文件应该可以配置类似`PYTHONPATH`的环境变量自动找到原python环境下的`site-packages`
 
 ## 设置`pip`第三方镜像源
 
@@ -222,4 +224,67 @@ import codecs
 ```
 json.dump(obj, fp, ensure_ascii=False)
 ```
+
+# 不要在for循环中改变迭代对象本身
+
+前两天在总结logging模块的时候，在方法末尾，需要手动移除logger.handlers中所有的handler 
+
+代码如下：
+
+```
+for handler in logger.handlers:
+	if handler:
+		handler.close()
+		logger.removeHandler(handler)
+```
+
+
+
+但是循环中`logger.removeHandler`会改变`logger.handlers`的值，这会导致移除**不干净**
+
+比如: 
+
+原本`logger.handlers`的值为[1, 2, 3]
+
+第一次循环 时，取index为[0]的元素值，然后执行remove操作。此时`logger.handlers`的值为[2, 3]
+
+第二次循环时，取index为[1]的元素值，此时取到的值是`3`.  列表中的值`2`就无法被删除  此时`logger.handlers`的值为[2]
+
+第三次循环时，取index为[2]的元素值。此时报**StopIteration**循环结束
+
+`logger.handlers`最后为[2]
+
+
+```
+if __name__ == '__main__':
+    handlers = [1, 2, 3]
+    print(handlers)
+    for index, i in enumerate(handlers, 0):
+        print("index: [%s]" % index)
+        handlers.remove(i)
+        print(handlers)
+```
+
+屏幕输出
+
+```
+[1, 2, 3]
+index: [0]
+[2, 3]
+index: [1]
+[2]
+```
+
+**解决方案:**
+
+`handlers[:]` 将原列表复制一份，作为for循环的迭代对象
+
+```
+for index, i in enumerate(handlers[:], 0):
+    print("index: [%s]" % index)
+    handlers.remove(i)
+    print(handlers)
+```
+
+
 
