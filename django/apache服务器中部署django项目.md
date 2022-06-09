@@ -1,4 +1,4 @@
-# 安装apache2
+# apache2中部署django项目
 
 ## 安装apache和mod_wsgi
 
@@ -30,7 +30,7 @@ apachectl -v
 <VirtualHost *:8888>
     ServerName www.siteforlog.com
     ServerAlias otherdomain.com
-    ServerAdmin 18792146966@163.com
+    ServerAdmin xxx@163.com
 
     Alias /media/ /home/yabin/mysite/learning_log/learning_log/media/
     Alias /static/ /home/yabin/mysite/learning_log/static/
@@ -73,7 +73,7 @@ Order deny,allow``Allow from all
 ```
 
 Listen 80
-# 新增端口
+# 新增端口8888
 Listen 8888
 
 <IfModule ssl_module>
@@ -88,14 +88,13 @@ Listen 8888
 ## 设置文件目录权限
 
 ```
-cd /home/tu/
 sudo chmod -R 644 project
 sudo find project -type d | xargs chmod 755
 ```
 
 在 Linux 服务器上，用户上传目录还要设置给 www-data 用户的写权限，下面的方法比较好，不影响原来的用户的编辑。
 
-假如上传目录为 zqxt/media/uploads 文件夹,进入media文件夹，将 uploads 用户组改为www-data，并且赋予该组**写权限**:
+假如上传目录为 project/media/uploads 文件夹,进入media文件夹，将 uploads 用户组改为www-data，并且赋予该组**写权限**:
 
 ```
 cd media/ 
@@ -119,7 +118,7 @@ sudo a2ensite sitename.conf
 service apache2 restart
 
 # 查看启动状态
-systmectl status apache2.service
+systemctl status apache2.service
 
 #　查看apache2报错日志
 cat /var/log/apache2/error.log

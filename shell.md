@@ -12,3 +12,11 @@ CUR_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 /root/shell_script
 ```
 
+# 修改用户权限
+
+`vim /etc/sudoers`
+
+```
+yabin  ALL=(ALL):ALL
+```
+

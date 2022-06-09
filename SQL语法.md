@@ -4,7 +4,7 @@
 
 1. `DQL` 数据查询 select
 2. `DML` 数据操作 update、delete、insert
-3. `DDL` 数据定义 create、alter、drop 
+3. `DDL` 数据定义 create、alter、drop、truncate
 4. `TCL` 事务控制 commit、rollback 事务的提交及回滚
 5. `DCL` 数据控制 grant、revoke 数据授权及撤销
 
@@ -185,7 +185,23 @@ mysql> select * from salgrade;
 
 select字段后仅能跟**分组字段**、**分组函数**
 
-分株函数不能直接使用在`WHERE`子句中
+分组函数不能直接使用在`WHERE`子句中
+
+**案例**：分组后重新筛选
+
+```
+mysql> select job, round(avg(sal),1) as avgsal from EMP group by job having avgsal > 1400;
++-----------+--------+
+| job       | avgsal |
++-----------+--------+
+| MANAGER   | 2758.3 |
+| ANALYST   |   3000 |
+| PRESIDENT |   5000 |
++-----------+--------+
+3 rows in set (0.00 sec)
+```
+
+
 
 ## 单行处理函数
 
